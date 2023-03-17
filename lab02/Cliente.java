@@ -15,45 +15,44 @@ public class Cliente {
     }
 
     // Getters e setters
-    public String getNome (){
+    public String getNome(){
         return nome;
     }
 
-    public void setNome (String nome){
+    public void setNome(String nome){
         this.nome = nome;
     }
 
-    //public String getNome (){
-    //    return nome;
-    //}
-//
-    //public void setNome (String nome){
-    //    this.nome = nome;
-    //}
-    
-
-
-    public String getTelefone (){
+    public String getcpf(){
         return cpf;
     }
 
-    public void setTelefone (String cpf){
+    public void setcpf(String cpf){
         this.cpf = cpf;
     }
-
-    public String getdataNascimento (){
+    
+    public String getdataNascimento(){
         return dataNascimento;
-    }
-
-    public void setdataNascimento (String dataNascimento){
+    }    
+    
+    public void setdataNascimento(String dataNascimento){
         this.dataNascimento = dataNascimento;
     }
+    
 
-    public String getEndereco (){
+    public int getidade(){
+        return idade;
+    }
+    
+    public void setidade(int idade){
+        this.idade = idade;
+    }
+    
+    public String getEndereco(){
         return endereco;
     }
 
-    public void setEndereco (String endereco){
+    public void setEndereco(String endereco){
         this.endereco = endereco;
     }
 }
