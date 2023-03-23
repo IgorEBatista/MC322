@@ -4,7 +4,7 @@ public class Cliente {
     private String dataNascimento;
     private int idade;
     private String endereco;
-
+    
     // Construtor
     public Cliente (String nome, String cpf, int idade, String dataNascimento, String endereco){
         this.nome = nome;
@@ -13,12 +13,13 @@ public class Cliente {
         this.idade = idade;
         this.endereco = endereco;
     }
-
+    
     // Getters e setters
+    
     public String getNome(){
         return nome;
     }
-
+    
     public void setNome(String nome){
         this.nome = nome;
     }
@@ -28,7 +29,13 @@ public class Cliente {
     }
 
     public void setcpf(String cpf){
-        this.cpf = cpf;
+        boolean valido = validarCPF(cpf);
+        if (valido){
+            this.cpf = cpf;
+        } else {
+            
+        }
+        
     }
     
     public String getdataNascimento(){
@@ -51,8 +58,13 @@ public class Cliente {
     public String getEndereco(){
         return endereco;
     }
-
+    
     public void setEndereco(String endereco){
         this.endereco = endereco;
+    }
+    
+    //Outros metodos
+    private boolean validarCPF(String cpf){
+        return true;
     }
 }
