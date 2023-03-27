@@ -1,3 +1,5 @@
+import java.beans.PropertyEditorManager;
+
 public class Cliente {
     private String nome;
     private String cpf;
@@ -9,7 +11,7 @@ public class Cliente {
     
     public Cliente (String nome, String cpf, int idade, String dataNascimento, String endereco){
         this.nome = nome;
-        this.cpf = cpf;
+        setcpf(cpf);
         this.dataNascimento = dataNascimento;
         this.idade = idade;
         this.endereco = endereco;
@@ -31,10 +33,11 @@ public class Cliente {
 
     public void setcpf(String cpf){
         boolean valido = validarCPF(cpf);
+        System.out.println(valido);
         if (valido){
             this.cpf = cpf;
         } else {
-
+            System.out.println("CPF inválido");
         }
         
     }
@@ -65,13 +68,25 @@ public class Cliente {
     }
     
     //Outros metodos
+
+    public String toString() {
+    //Controle de string
+        return (getNome() + "\n" +
+        getcpf() + "\n" +
+        getdataNascimento() + "\n" +
+        getidade() + "\n" +
+        getEndereco() + "\n" );
+    }
+    
+
     private boolean validarCPF(String cpf){
-        int Pdig = 0, Sdig = 0;
+    //Validador de cpf
+        int pdig = 0, Sdig = 0;
         boolean igual = true;
 
         for (int i  = 0; i<cpf.length(); i++){
             char c = cpf.charAt(i);
-            if ( Character.isDigit(c)){
+            if ( !Character.isDigit(c)){
                 cpf = cpf.replaceAll(Character.toString(c), "");
             }
         }        
@@ -90,13 +105,36 @@ public class Cliente {
             return false;
         }
         
-        //Calcula dígitos verificadores
+        //Calcula o primeiro dígito verificador
 
         for (int i = 0; i < (cpf.length() - 2); i++) {
-            Pdig +=((int)(cpf.charAt(i)) * (10 - i));
+            pdig +=((cpf.charAt(i))- 48) * (10 - i);
         }
-        Pdig /= 11;
+        pdig = (pdig * 10) % 11;
+        if (pdig>=10) {
+            pdig = 0;
+        }
+        System.out.println(pdig);
 
+        if (pdig != cpf.charAt(9) - '0') {
+            return false;
+            
+        }
+
+        //Calcula o segundo dígito verificador
+
+        for (int i = 0; i < (cpf.length() - 1); i++) {
+            Sdig +=((cpf.charAt(i) - 48) * (11 - i));
+        }
+        Sdig = (Sdig * 10) % 11;
+        if (Sdig>=10) {
+            Sdig = 0;
+        }
+
+        if (Sdig != cpf.charAt(10) - '0') {
+            return false;
+            
+        }
 
         return true;
     }

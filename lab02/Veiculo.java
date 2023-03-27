@@ -34,5 +34,10 @@ public class Veiculo {
         this.modelo = modelo;
     }
 
-    
+    //Outros metodos
+
+    public String toString() {
+    return (getmarca() + getmodelo());
+        
+    }
 }
