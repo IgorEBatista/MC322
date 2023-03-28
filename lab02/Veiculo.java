@@ -37,7 +37,9 @@ public class Veiculo {
     //Outros metodos
 
     public String toString() {
-    return (getmarca() + getmodelo());
-        
+    //Controle de string
+    return ("Placa: " + getplaca() + "\n" +
+            "Marca: " + getmarca() + "\n" +
+            "Modelo: " + getmodelo() + "\n");
     }
 }

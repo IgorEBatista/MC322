@@ -44,4 +44,14 @@ public class Seguradora {
     public void setEndereco (String endereco){
         this.endereco = endereco;
     }
+
+    //Outros Métodos
+    public String toString() {
+        //Controle de string
+            return ("Nome: " + getNome() + "\n" +
+                    "Telefone: " + getTelefone() + "\n" +
+                    "Email: " + getEmail() + "\n" +
+                    "Endereço: " + getEndereco() + "\n" );
+        }
+    
 }

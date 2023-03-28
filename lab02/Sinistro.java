@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Sinistro {
 
     private int id;
@@ -5,8 +7,8 @@ public class Sinistro {
     private String endereco;
 
     //Construtor
-    public Sinistro (int id, String data, String endereco){
-        this.id = id;
+    public Sinistro (String data, String endereco){
+        this.id = gerarID();
         this.data = data;
         this.endereco = endereco;
     }
@@ -35,4 +37,18 @@ public class Sinistro {
         this.endereco = endereco;
     }
     
+    //Outros Métodos
+
+    public int gerarID(){
+        //Gera um ID aleatório de 6 dígitos
+        Random gerador = new Random();
+        return gerador.nextInt(900000) + 100000;
+    }
+
+    public String toString(){
+        //Controle de string
+        return ("ID: " + getid() + "\n" +
+                "Data: " + getdata() + "\n" +
+                "Endereço: " + getendereco() + "\n" );
+    }
 }
