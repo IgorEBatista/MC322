@@ -122,7 +122,6 @@ public class Lab02 {
                 } else {
                     System.out.println("Por favor, escolha uma opção válida (1/2/3/4/0)");
                 }
-                
             } while (rodando);
         }
     leitor.close();
