@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Lab02 {
+public class lab02 {
 
     public static void main(String[] args) {
         int modo = 0;
