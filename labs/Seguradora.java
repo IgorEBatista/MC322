@@ -1,8 +1,13 @@
+import java.util.ArrayList;
+
 public class Seguradora {
     private String nome;
     private String telefone;
     private String email;
     private String endereco;
+    private ArrayList<Sinistro> listaSinistros;
+    private ArrayList<Cliente> listaClientes;
+
 
     // Construtor
     public Seguradora (String nome, String telefone, String email, String endereco){
@@ -45,6 +50,22 @@ public class Seguradora {
         this.endereco = endereco;
     }
 
+    public ArrayList<Sinistro> getListaSinistros() {
+        return listaSinistros;
+    }
+
+    public void setListaSinistros(ArrayList<Sinistro> listaSinistros) {
+        this.listaSinistros = listaSinistros;
+    }
+
+    public ArrayList<Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public void setListaClientes(ArrayList<Cliente> listaClientes) {
+        this.listaClientes = listaClientes;
+    }
+
     //Outros Métodos
     public String toString() {
         //Controle de string
@@ -54,4 +75,34 @@ public class Seguradora {
                     "Endereço: " + getEndereco() + "\n" );
         }
     
+    public boolean cadastrarCliente(Cliente cliente){
+        return false;
+    }
+
+    public boolean removerCliente(String cliente){
+        return false;
+    }
+
+    public ArrayList<Cliente> listarClientes(String tipoCliente){
+        // Lista determinados clientes
+        ArrayList<Cliente> a = new ArrayList<Cliente>();
+        
+        return a;
+    }
+
+    public boolean gerarSinistro() {
+        return false;
+    }
+
+    public boolean visualizarSinistro(String cliente) {
+        return false;
+    }
+
+    public ArrayList<Sinistro> listarSinistros() {
+        ArrayList<Sinistro> a = new ArrayList<Sinistro>();
+        return a;
+    }
+
+
+
 }

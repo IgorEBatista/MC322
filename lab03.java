@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class lab02 {
+public class lab03 {
 
     public static void main(String[] args) {
         int modo = 0;
@@ -20,7 +20,7 @@ public class lab02 {
         if (modo == 1) {
             //Instanciamento de objetos
             Cliente cliente = new Cliente("Pedro","83371911047",23,"29/02/2000","Rua Roxo Moreira, nº3000");
-            Veiculo veiculo = new Veiculo("LAB0O02", "MC", "322A");
+            Veiculo veiculo = new Veiculo("LAB0O02", "MC", "322A", 0000);
             Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
             Sinistro sinistro = new Sinistro("17/07/2023","Rua da Reitoria, 109");
             
