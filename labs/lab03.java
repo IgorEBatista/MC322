@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class lab03 {
@@ -6,6 +8,8 @@ public class lab03 {
         int modo = 0;
         boolean iniciado = false;
         Scanner leitor = new Scanner(System.in);
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date data = formato.parse("20/04/2023");
 
         do {
             System.out.println("Escolha o modo de funcionamento:\n1 - Modo Automático de Demonstração\n2 - Modo Interativo (1/2)");            
@@ -19,10 +23,11 @@ public class lab03 {
         
         if (modo == 1) {
             //Instanciamento de objetos
+            
             Cliente cliente = new Cliente("Pedro","83371911047",23,"29/02/2000","Rua Roxo Moreira, nº3000");
             Veiculo veiculo = new Veiculo("LAB0O02", "MC", "322A", 0000);
             Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
-            Sinistro sinistro = new Sinistro("17/07/2023","Rua da Reitoria, 109");
+            Sinistro sinistro = new Sinistro(data,"Rua da Reitoria, 109",veiculo,cliente);
             
             //Impressão dos objetos
             System.out.println(cliente.toString());

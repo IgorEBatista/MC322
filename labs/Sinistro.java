@@ -1,33 +1,29 @@
 import java.util.Date;
-import java.util.Random;
 
 public class Sinistro {
 
-    private int id;
+    private static int serie;
+    private final int id;
     private Date data;
     private String endereco;
+    private Seguradora seguradora;
     private Veiculo veiculo;
     private Cliente cliente;
 
     //Construtor
     
-    
-
-    public Sinistro(int id, Date data, String endereco, Veiculo veiculo, Cliente cliente) {
-        this.id = id;
+    public Sinistro(Date data, String endereco, Veiculo veiculo, Cliente cliente) {
+        this.id = serie;
         this.data = data;
         this.endereco = endereco;
         this.veiculo = veiculo;
         this.cliente = cliente;
+        serie++;
     }
 
     // Getters e setters
     public int getid (){
         return id;
-    }
-
-    public void setid (int id){
-        this.id = id;
     }
 
     public Date getdata (){
@@ -44,6 +40,14 @@ public class Sinistro {
 
     public void setendereco (String endereco){
         this.endereco = endereco;
+    }
+
+    public Seguradora getSeguradora() {
+        return seguradora;
+    }
+
+    public void setSeguradora(Seguradora seguradora) {
+        this.seguradora = seguradora;
     }
 
     public Veiculo getVeiculo() {
@@ -63,12 +67,6 @@ public class Sinistro {
     }
     
     //Outros Métodos
-
-    public int gerarID(){
-        //Gera um ID aleatório de 6 dígitos
-        Random gerador = new Random();
-        return gerador.nextInt(900000) + 100000;
-    }
 
     public String toString(){
         //Controle de string
