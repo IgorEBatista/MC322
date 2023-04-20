@@ -1,15 +1,16 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Cliente {
     private String nome;
     private String endereco;
-    private ArrayList<Veiculo> lista_Veiculos;
+    private LinkedList<Veiculo> lista_Veiculos;
     
     // Construtor
-    
+
     public Cliente (String nome, String endereco){
         this.nome = nome;
         this.endereco = endereco;
+        this.lista_Veiculos = new LinkedList<Veiculo>();
     }
     
     // Getters e setters
@@ -30,7 +31,19 @@ public class Cliente {
         this.endereco = endereco;
     }
     
+    public LinkedList<Veiculo> getLista_Veiculos() {
+        return lista_Veiculos;
+    }
+
     //Outros metodos
+
+    public void addVeiculo(Veiculo veiculo){
+        lista_Veiculos.add(veiculo);
+    }
+
+    public boolean remVeiculo(Veiculo veiculo){
+        return lista_Veiculos.remove(veiculo);
+    }    
 
     public String toString() {
     //Controle de string

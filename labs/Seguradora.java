@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 public class Seguradora {
     private String nome;
@@ -6,7 +8,7 @@ public class Seguradora {
     private String email;
     private String endereco;
     private ArrayList<Sinistro> listaSinistros;
-    private ArrayList<Cliente> listaClientes;
+    private LinkedList<Cliente> listaClientes;
 
 
     // Construtor
@@ -15,6 +17,8 @@ public class Seguradora {
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
+        this.listaSinistros = new ArrayList<Sinistro>();
+        this.listaClientes = new LinkedList<Cliente>();
     }
 
     // Getters e setters
@@ -54,16 +58,8 @@ public class Seguradora {
         return listaSinistros;
     }
 
-    public void setListaSinistros(ArrayList<Sinistro> listaSinistros) {
-        this.listaSinistros = listaSinistros;
-    }
-
-    public ArrayList<Cliente> getListaClientes() {
+    public LinkedList<Cliente> getListaClientes() {
         return listaClientes;
-    }
-
-    public void setListaClientes(ArrayList<Cliente> listaClientes) {
-        this.listaClientes = listaClientes;
     }
 
     //Outros Métodos
@@ -74,35 +70,58 @@ public class Seguradora {
                     "Email: " + getEmail() + "\n" +
                     "Endereço: " + getEndereco() + "\n" );
         }
-    
+        
+    public Cliente identClient(String nome){
+        Iterator<Cliente> elem = this.listaClientes.iterator();
+        while (elem.hasNext()) {
+            if (elem.next().getNome() == nome) {
+                return elem.next();
+            }
+        }
+        return null;
+    }
+
     public boolean cadastrarCliente(Cliente cliente){
-        return false;
+        return listaClientes.add(cliente);
     }
 
     public boolean removerCliente(String cliente){
-        return false;
+        Cliente alvo = identClient(cliente);
+        return listaClientes.remove(alvo);
     }
 
-    public ArrayList<Cliente> listarClientes(String tipoCliente){
+    public ArrayList<Cliente> listarClientes(String tipoCliente){ // Terminar
         // Lista determinados clientes
         ArrayList<Cliente> a = new ArrayList<Cliente>();
         
         return a;
     }
 
-    public boolean gerarSinistro() {
-        return false;
+    public boolean gerarSinistro(Sinistro sinistro) {
+        return listaSinistros.add(sinistro);
     }
 
-    public boolean visualizarSinistro(String cliente) {
-        return false;
+    public boolean visualizarSinistro(String nome) {
+        boolean achou = false;
+        Iterator<Sinistro> elem = this.listaSinistros.iterator();;
+        while (elem.hasNext()) {
+            if (elem.next().getCliente().getNome() == nome) {
+                achou = true;
+                System.out.println(elem.next());
+            }
+        }
+        return achou;
     }
 
-    public ArrayList<Sinistro> listarSinistros() {
-        ArrayList<Sinistro> a = new ArrayList<Sinistro>();
-        return a;
+    public void listarSinistros() {
+        Iterator<Sinistro> elem = this.listaSinistros.iterator();;
+        
+        if (listaSinistros.isEmpty()) {
+            System.out.println("Não há nenehum sinistro cadastrado!");
+        } else {
+            while (elem.hasNext()) {
+                System.out.println(elem.next());
+            }
+        }
     }
-
-
-
 }

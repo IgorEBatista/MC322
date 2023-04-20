@@ -23,22 +23,52 @@ public class Lab03 {
         } while (!iniciado);
         
         if (modo == 1) {
-            //Instanciamento de objetos
-            Date data_carteira = formato.parse("20/04/2023");
-            Date data_nasc = formato.parse("29/02/2000");
+            //Declaracao de datas
+            Date data_fundacao = formato.parse("01/01/2000");
+            Date data_carteira1 = formato.parse("20/04/2023");
+            Date data_nasc1 = formato.parse("29/02/2000");
+            Date data_carteira2 = formato.parse("20/04/2023");
+            Date data_nasc2 = formato.parse("29/02/2000");
             Date data_acidente = formato.parse("21/04/2023");
-
-            ClientePF cliente = new ClientePF("Pedro","Rua Roxo Moreira, nº3000","83371911047", "Masculino", data_carteira, "Superior Incompleto", data_nasc, "Alta");
-            Veiculo veiculo = new Veiculo("LAB0O02", "MC", "322A", 0000);
-            Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
-            Sinistro sinistro = new Sinistro(data_acidente,"Rua da Reitoria, 109", veiculo, cliente);
             
+            
+            //Cadastrando 3 Clientes.
+            ClientePJ cliente_J1 = new ClientePJ("Lab's Corp", "Rua Roxo Moreira, nº42", "86113575000136", data_fundacao);
+            ClientePF cliente_F1 = new ClientePF("Pedro","Rua Roxo Moreira, nº1042","83371911047", "Masculino", 
+                                                data_carteira1, "Superior Incompleto", data_nasc1, "Media-Alta");
+
+            ClientePF cliente_F2 = new ClientePF("Joana","Rua Roxo Moreira, nº3000","613.292.220-24", "Feminino", 
+                                                data_carteira2, "Superior Completo", data_nasc2, "Alta");
+            
+            
+            //Criando Veículos
+            Veiculo veiculo0 = new Veiculo("LAB0O02", "MC", "322A", 2000);
+            Veiculo veiculo1 = new Veiculo("LAB1O02", "MC", "322A", 2001);
+            Veiculo veiculo2 = new Veiculo("LAB2O02", "MC", "322A", 2002);
+
+            //Cadastrando Veículos
+            cliente_J1.addVeiculo(veiculo0);
+            cliente_F1.addVeiculo(veiculo1);
+            cliente_F2.addVeiculo(veiculo2);
+
+            
+            //Criando Seguradora
+            Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
+            //Cadastrando Clientes na Seguradora
+            
+            //Cadastrando Sinistros
+            Sinistro sinistro = new Sinistro(data_acidente,"Rua da Reitoria, 109", veiculo1, cliente_J1);
+            
+            //Removendo um Cliente
+
+            //Visualizando Listas
+
             //Impressão dos objetos
-            System.out.println(cliente.toString());
-            System.out.println(veiculo.toString());
+            System.out.println(cliente_J1.toString());
+            System.out.println(veiculo1.toString());
             System.out.println(seguradora.toString());
             System.out.println(sinistro.toString());
-            System.out.println(cliente.toString());
+            System.out.println(cliente_F1.toString());
         /*    
         } else {
             int escolha;
