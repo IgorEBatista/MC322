@@ -1,15 +1,16 @@
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class lab03 {
+public class Lab03 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         int modo = 0;
         boolean iniciado = false;
         Scanner leitor = new Scanner(System.in);
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        Date data = formato.parse("20/04/2023");
+
 
         do {
             System.out.println("Escolha o modo de funcionamento:\n1 - Modo Automático de Demonstração\n2 - Modo Interativo (1/2)");            
@@ -23,25 +24,22 @@ public class lab03 {
         
         if (modo == 1) {
             //Instanciamento de objetos
-            
-            Cliente cliente = new Cliente("Pedro","83371911047",23,"29/02/2000","Rua Roxo Moreira, nº3000");
+            Date data_carteira = formato.parse("20/04/2023");
+            Date data_nasc = formato.parse("29/02/2000");
+            Date data_acidente = formato.parse("21/04/2023");
+
+            ClientePF cliente = new ClientePF("Pedro","Rua Roxo Moreira, nº3000","83371911047", "Masculino", data_carteira, "Superior Incompleto", data_nasc, "Alta");
             Veiculo veiculo = new Veiculo("LAB0O02", "MC", "322A", 0000);
             Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
-            Sinistro sinistro = new Sinistro(data,"Rua da Reitoria, 109",veiculo,cliente);
+            Sinistro sinistro = new Sinistro(data_acidente,"Rua da Reitoria, 109", veiculo, cliente);
             
             //Impressão dos objetos
             System.out.println(cliente.toString());
             System.out.println(veiculo.toString());
             System.out.println(seguradora.toString());
             System.out.println(sinistro.toString());
-
-            //Teste de Setters
-            System.out.println("Mudando nome e CPF");
-            cliente.setNome("Joaquim");
-            cliente.setcpf("498.456.590-45");
-            cliente.setcpf("127.726.730-81");
             System.out.println(cliente.toString());
-            
+        /*    
         } else {
             int escolha;
             boolean rodando = true;
@@ -127,8 +125,8 @@ public class lab03 {
                 } else {
                     System.out.println("Por favor, escolha uma opção válida (1/2/3/4/0)");
                 }
-            } while (rodando);
+            } while (rodando);*/
         }
     leitor.close();
-    }
+    } 
 }
