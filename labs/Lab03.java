@@ -19,8 +19,8 @@ public class Lab03 {
             
         //Verificando CPF e CNPJ
 
-        ClientePF.validarCPF("83371911047");
-        ClientePJ.validarCNPJ("86113575000136");
+        System.out.println(ClientePF.validarCPF("83371911047"));
+        System.out.println(ClientePJ.validarCNPJ("86113575000136"));
             
         //Criando 3 Clientes.
         ClientePJ cliente_J1 = new ClientePJ("Lab's Corp", "Rua Roxo Moreira, nº42", "86113575000136", data_fundacao);

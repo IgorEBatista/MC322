@@ -54,7 +54,7 @@ public class ClientePJ extends Cliente {
 
         for (int i = 0; i < (cnpj.length() - 2); i++) {
             j = 5 - i;
-            if (j < 2) j += 8;
+            if (j < 2 ) j += 8;
 
             pdig +=(Character.getNumericValue(cnpj.charAt(i))) * j;
         }
@@ -63,7 +63,7 @@ public class ClientePJ extends Cliente {
             pdig = 0;
         }else pdig = 11 - pdig;
 
-        if (pdig != Character.getNumericValue(cnpj.charAt(9))) {
+        if (pdig != Character.getNumericValue(cnpj.charAt(cnpj.length() - 2))) {
             return false;
             
         }
@@ -81,7 +81,7 @@ public class ClientePJ extends Cliente {
             sdig = 0;
         }else sdig = 11 - sdig;
 
-        if (sdig != Character.getNumericValue(cnpj.charAt(10))) {
+        if (sdig != Character.getNumericValue(cnpj.charAt(cnpj.length() - 1))) {
             return false;
             
         }
