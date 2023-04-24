@@ -91,7 +91,9 @@ public class ClientePJ extends Cliente {
 
 
     public String toString() {
-        return (super.toString() + "\nCNPJ: " + CNPJ + "\nData de Fundacao: " + dataFundacao);
+        return (super.toString() + 
+                "\nCNPJ: " + CNPJ + 
+                "\nData de Fundacao: " + dataFundacao + "\n");
     }
     
 }

@@ -65,17 +65,18 @@ public class Seguradora {
     //Outros Métodos
     public String toString() {
         //Controle de string
-            return ("Nome: " + getNome() + "\n" +
-                    "Telefone: " + getTelefone() + "\n" +
-                    "Email: " + getEmail() + "\n" +
-                    "Endereço: " + getEndereco() + "\n" );
+            return ("Nome: " + getNome() +
+                    "\nTelefone: " + getTelefone() +
+                    "\nEmail: " + getEmail() +
+                    "\nEndereço: " + getEndereco() + "\n" );
         }
         
     public Cliente identClient(String nome){
         Iterator<Cliente> elem = this.listaClientes.iterator();
         while (elem.hasNext()) {
-            if (elem.next().getNome() == nome) {
-                return elem.next();
+            Cliente atual = (Cliente)elem.next();
+            if (atual.getNome() == nome) {
+                return atual;
             }
         }
         return null;
@@ -87,14 +88,21 @@ public class Seguradora {
 
     public boolean removerCliente(String cliente){
         Cliente alvo = identClient(cliente);
+        if(alvo == null) {System.out.println("Cliente não encontrado!");}
         return listaClientes.remove(alvo);
     }
 
-    public ArrayList<Cliente> listarClientes(String tipoCliente){ // Terminar
+    public void listarClientes(String tipoCliente){
         // Lista determinados clientes
-        ArrayList<Cliente> a = new ArrayList<Cliente>();
-        
-        return a;
+        Iterator<Cliente> elem = this.listaClientes.iterator();
+        int tipo = 0;
+        if(tipoCliente == "ClientePJ"){ tipo = 1;}
+        while (elem.hasNext()) {
+            Cliente atual = (Cliente)elem.next();
+            if ((tipo == 0 && atual instanceof ClientePF) || (tipo == 1 && atual instanceof ClientePJ)) {
+                System.out.println(atual);
+            }
+        }
     }
 
     public boolean gerarSinistro(Sinistro sinistro) {
@@ -103,24 +111,26 @@ public class Seguradora {
 
     public boolean visualizarSinistro(String nome) {
         boolean achou = false;
-        Iterator<Sinistro> elem = this.listaSinistros.iterator();;
+        Iterator<Sinistro> elem = this.listaSinistros.iterator();
         while (elem.hasNext()) {
-            if (elem.next().getCliente().getNome() == nome) {
+            Sinistro atual = (Sinistro)elem.next();
+            if (atual.getCliente().getNome() == nome) {
                 achou = true;
-                System.out.println(elem.next());
+                System.out.println(atual);
             }
         }
         return achou;
     }
 
     public void listarSinistros() {
-        Iterator<Sinistro> elem = this.listaSinistros.iterator();;
+        Iterator<Sinistro> elem = this.listaSinistros.iterator();
         
         if (listaSinistros.isEmpty()) {
             System.out.println("Não há nenehum sinistro cadastrado!");
         } else {
             while (elem.hasNext()) {
-                System.out.println(elem.next());
+                Sinistro atual = (Sinistro)elem.next();
+                System.out.println(atual);
             }
         }
     }

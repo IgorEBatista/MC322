@@ -47,7 +47,8 @@ public class Cliente {
 
     public String toString() {
     //Controle de string
-        return ("Nome: " + getNome() + "\nEndereço: " + getEndereco());
+        return ("Nome: " + getNome() + 
+                "\nEndereço: " + getEndereco());
     }
     
 }

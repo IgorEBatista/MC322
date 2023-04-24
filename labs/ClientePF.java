@@ -12,7 +12,7 @@ public class ClientePF extends Cliente{
 
     public ClientePF(String nome, String endereco, String cpf, String genero, Date dataLicenca, String educacao, Date dataNascimento, String classeEconomica){        
         super(nome, endereco);
-        CPF = cpf;
+        this.CPF = cpf;
         this.genero = genero;
         this.dataLicenca = dataLicenca;
         this.educacao = educacao;
@@ -130,7 +130,12 @@ public class ClientePF extends Cliente{
     }
 
     public String toString() {
-        return (super.toString() + "\nCPF: " + CPF + "\nGenero: " + genero + "\nData da Licenca: " + dataLicenca + "\nNível de Educacao: "
-                + educacao + "\nData de Nascimento: " + dataNascimento + "\nClasse Economica: " + classeEconomica);
+        return (super.toString() + 
+                "\nCPF: " + CPF + 
+                "\nGenero: " + genero + 
+                "\nData da Licenca: " + dataLicenca + 
+                "\nNível de Educacao: " + educacao + 
+                "\nData de Nascimento: " + dataNascimento + 
+                "\nClasse Economica: " + classeEconomica +"\n");
     }
 }

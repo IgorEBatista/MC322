@@ -12,10 +12,11 @@ public class Sinistro {
 
     //Construtor
     
-    public Sinistro(Date data, String endereco, Veiculo veiculo, Cliente cliente) {
-        this.id = serie;
+    public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+        this.id = serie + 100000;
         this.data = data;
         this.endereco = endereco;
+        this.seguradora = seguradora;
         this.veiculo = veiculo;
         this.cliente = cliente;
         serie++;
@@ -70,8 +71,11 @@ public class Sinistro {
 
     public String toString(){
         //Controle de string
-        return ("ID: " + getid() + "\n" +
-                "Data: " + getdata() + "\n" +
-                "Endereço: " + getendereco() + "\n" );
+        return ("ID: " + getid() + 
+                "\nData: " + getdata() + 
+                "\nEndereço: " + getendereco() + 
+                "\nSeguradora: " + getSeguradora() + 
+                "\nVeículo: " + getVeiculo() + 
+                "\nCliente: " + getCliente().getNome() + "\n");
     }
 }
