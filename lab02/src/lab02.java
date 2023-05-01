@@ -1,39 +1,42 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
-public class App {
-    public static void main(String[] args) throws Exception {
-        ArrayList<Integer> lista = new ArrayList<>();
-        System.out.println("Hello, World!");
+public class Lab02 {
+
+    public static void main(String[] args) {
+        int modo = 0;
+        boolean iniciado = false;
+        Scanner leitor = new Scanner(System.in);
+
+        do {
+            System.out.println("Escolha o modo de funcionamento:\n1 - Modo Automático de Demonstração\n2 - Modo Interativo (1/2)");            
+            modo = Integer.valueOf(leitor.nextInt());
+            if (modo == 1 || modo == 2) {
+                iniciado = true;                
+            } else {
+                System.out.println("Por favor, escolha uma opção válida!\n(1/2)");
+            }
+        } while (!iniciado);
         
-        lista.add(1);
-        lista.add(2);
-        lista.add(3);
-        lista.add(9);
+        if (modo == 1) {
+            //Instanciamento de objetos
+            Cliente cliente = new Cliente("Pedro","83371911047",23,"29/02/2000","Rua Roxo Moreira, nº3000");
+            Veiculo veiculo = new Veiculo("LAB0O02", "MC", "322A");
+            Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
+            Sinistro sinistro = new Sinistro("17/07/2023","Rua da Reitoria, 109");
+            
+            //Impressão dos objetos
+            System.out.println(cliente.toString());
+            System.out.println(veiculo.toString());
+            System.out.println(seguradora.toString());
+            System.out.println(sinistro.toString());
 
-
-        System.out.println(lista);
-
-        lista.remove(null);
-
-        System.out.println(lista);
-        
-    }
-
-/*
-
-
-        // do {
-        //     System.out.println("Escolha o modo de funcionamento:\n1 - Modo Automático de Demonstração\n2 - Modo Interativo (1/2)");            
-        //     modo = Integer.valueOf(leitor.nextInt());
-        //     if (modo == 1 || modo == 2) {
-        //         iniciado = true;                
-        //     } else {
-        //         System.out.println("Por favor, escolha uma opção válida!\n(1/2)");
-        //     }
-        // } while (!iniciado);
-
-
-        
+            //Teste de Setters
+            System.out.println("Mudando nome e CPF");
+            cliente.setNome("Joaquim");
+            cliente.setcpf("498.456.590-45");
+            cliente.setcpf("127.726.730-81");
+            System.out.println(cliente.toString());
+            
         } else {
             int escolha;
             boolean rodando = true;
@@ -119,5 +122,8 @@ public class App {
                 } else {
                     System.out.println("Por favor, escolha uma opção válida (1/2/3/4/0)");
                 }
-            } while (rodando);*/
+            } while (rodando);
+        }
+    leitor.close();
+    }
 }
