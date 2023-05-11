@@ -134,4 +134,7 @@ public class Seguradora {
             }
         }
     }
+
+    public float calcularReceita(){return 1.01f;}
+
 }
