@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class AppMain {
+    
+    private static Scanner leitor = new Scanner(System.in);
+    private static int escolha;
 
     public static void main(String[] args) throws ParseException {
-        Scanner leitor = new Scanner(System.in);
+        
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
         //Declaracao de datas
@@ -70,13 +73,107 @@ public class AppMain {
         seguradora.visualizarSinistro("Lab's Corp");
         System.out.println("A receita da seguradora \"IC Seguros\" é:" + seguradora.calcularReceita() + "\n");
 
+        //Chamando o menu interativo
 
+        menuPrin();
 
-    int a = 0;
-
-    if (a == MenuOperacoesPrin.CADASTRAR.getOperacao()){
-        MenuOperacoesPrin.CADASTRAR.getOperacao();
-    }
-    leitor.close();
+        leitor.close();
     } 
+
+    private static void menuPrin() {
+        
+        do {
+            // Lê escolha do usuário
+            escolha = leitor.nextInt();
+            // Determina operação
+            if (escolha == MenuOperacoesPrin.CADASTRAR.getOperacao()){
+                menuCad();
+            }
+            else if (escolha == MenuOperacoesPrin.LISTAR.getOperacao()){
+                menuList();
+            }
+            else if (escolha == MenuOperacoesPrin.SINISTRAR.getOperacao()){
+                ;
+            }
+            else if (escolha == MenuOperacoesPrin.TRANSFERIR.getOperacao()){
+                ;
+            }
+            else if (escolha == MenuOperacoesPrin.CALCULAR.getOperacao()){
+                ;
+            }
+            else if (escolha == MenuOperacoesPrin.EXCLUIR.getOperacao()){
+                menuExcl();
+            }
+            else if (escolha != MenuOperacoesPrin.SAIR.getOperacao()){
+                System.out.println("Por favor, as opções válidas são apenas números de 0 a 6 (inclusos).");
+            }
+        } while (escolha == MenuOperacoesPrin.SAIR.getOperacao());
+    }
+
+    private static void menuCad() {
+        do {
+            // Lê escolha do usuário
+            escolha = leitor.nextInt();
+            // Determina operação
+            if (escolha == MenuOperacoesCad.CLIENTE.getOperacao()){
+                
+            }
+            else if (escolha == MenuOperacoesCad.VEICULO.getOperacao()){
+                
+            }
+            else if (escolha == MenuOperacoesCad.SEGURADORA.getOperacao()){
+                
+            }
+            else if (escolha != MenuOperacoesCad.VOLTAR.getOperacao()){
+                System.out.println("Por favor, as opções válidas são apenas números de 0 a 3 (inclusos).");
+            }
+        } while (escolha != MenuOperacoesCad.VOLTAR.getOperacao());
+    }
+
+    private static void menuList() {
+        do {
+            // Lê escolha do usuário
+            escolha = leitor.nextInt();
+            // Determina operação
+            if (escolha == MenuOperacoesList.CLI_SEG.getOperacao()){
+                
+            }
+            else if (escolha == MenuOperacoesList.SIN_SEG.getOperacao()){
+                
+            }
+            else if (escolha == MenuOperacoesList.SIN_CLI.getOperacao()){
+                
+            }
+            else if (escolha == MenuOperacoesList.VEI_SEG.getOperacao()){
+                
+            }
+            else if (escolha == MenuOperacoesList.VEI_CLI.getOperacao()){
+                
+            }
+            else if (escolha != MenuOperacoesList.VOLTAR.getOperacao()){
+                System.out.println("Por favor, as opções válidas são apenas números de 0 a 5 (inclusos).");
+            }
+        } while (escolha != MenuOperacoesList.VOLTAR.getOperacao());
+    }
+
+    private static void menuExcl() {
+        do {
+            // Lê escolha do usuário
+            escolha = leitor.nextInt();
+            // Determina operação
+            if (escolha == MenuOperacoesExcl.CLIENTE.getOperacao()){
+                ;
+            }
+            else if (escolha == MenuOperacoesExcl.VEICULO.getOperacao()){
+                ;
+            }
+            else if (escolha == MenuOperacoesExcl.SINISTRO.getOperacao()){
+                ;
+            }
+            else if (escolha != MenuOperacoesExcl.VOLTAR.getOperacao()){
+                System.out.println("Por favor, as opções válidas são apenas números de 0 a 3 (inclusos).");
+            }
+
+        } while (escolha != MenuOperacoesExcl.VOLTAR.getOperacao());
+    }
 }

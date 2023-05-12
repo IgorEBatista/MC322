@@ -135,6 +135,6 @@ public class Seguradora {
         }
     }
 
-    public float calcularReceita(){return 1.01f;}
+    public float calcularReceita(){return 1.01f;}// TERMINAR
 
 }
