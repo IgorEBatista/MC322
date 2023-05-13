@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class Cliente {
+public abstract class Cliente {
     private String nome;
     private String endereco;
     private LinkedList<Veiculo> lista_Veiculos;
@@ -44,6 +44,8 @@ public class Cliente {
     public boolean remVeiculo(Veiculo veiculo){
         return lista_Veiculos.remove(veiculo);
     }    
+
+    public abstract double calculaScore(Cliente cliente);
 
     public String toString() {
     //Controle de string

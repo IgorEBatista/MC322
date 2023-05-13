@@ -78,4 +78,8 @@ public class ClientePF extends Cliente{
                 "\nData de Nascimento: " + dataNascimento + 
                 "\nClasse Economica: " + classeEconomica +"\n");
     }
+
+    public double calculaScore(Cliente cliente) { //TERMINAR
+        return 1.0;
+    }
 }

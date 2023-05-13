@@ -7,11 +7,11 @@ public class AppMain {
     
     private static Scanner leitor = new Scanner(System.in);
     private static int escolha;
+    private static String leitura;
+    private static SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
     public static void main(String[] args) throws ParseException {
         
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
         //Declaracao de datas
         Date data_fundacao = formato.parse("01/01/2000");
         Date data_carteira1 = formato.parse("20/04/2023");
@@ -80,7 +80,7 @@ public class AppMain {
         leitor.close();
     } 
 
-    private static void menuPrin() {
+    private static void menuPrin(){
         
         do {
             // Lê escolha do usuário
@@ -93,7 +93,23 @@ public class AppMain {
                 menuList();
             }
             else if (escolha == MenuOperacoesPrin.SINISTRAR.getOperacao()){
-                ;
+                Boolean em_opera;
+                Sinistro novo_Sin;
+                Date data;
+                Seguradora seg;
+                Veiculo vei;
+                String end;
+
+                System.out.println("Qual dia aconteceu o sinistro? (Digite a data no formato: \"dd/mm/yyyy\")\n");
+                do{
+                    try {
+                        data = formato.parse(leitor.nextLine());
+                        em_opera = false;
+                    } catch (ParseException except) {
+                        System.out.println("Data inválida!\nPor favor, digite a data no formato: \"dd/mm/yyyy\")\n");
+                        em_opera = true;
+                    }
+                } while(em_opera);
             }
             else if (escolha == MenuOperacoesPrin.TRANSFERIR.getOperacao()){
                 ;

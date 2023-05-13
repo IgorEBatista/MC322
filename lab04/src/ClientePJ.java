@@ -23,8 +23,9 @@ public class ClientePJ extends Cliente {
 
     //Outros métodos
 
-    
-
+    public double calculaScore(Cliente cliente) { //TERMINAR
+        return 1.0;
+    }
 
     public String toString() {
         return (super.toString() + 
