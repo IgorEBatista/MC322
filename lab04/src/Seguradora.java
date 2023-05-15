@@ -75,8 +75,27 @@ public class Seguradora {
         Iterator<Cliente> elem = this.listaClientes.iterator();
         while (elem.hasNext()) {
             Cliente atual = (Cliente)elem.next();
-            if (atual.getNome() == nome) {
+            if (atual.getNome().equals(nome)) {
                 return atual;
+            }
+        }
+        return null;
+    }
+    public Cliente identClient(Long CPF){
+        Iterator<Cliente> elem = this.listaClientes.iterator();
+        if (CPF > (10^12)) {
+            while (elem.hasNext()) {
+                ClientePJ atual = (ClientePJ)elem.next();
+                if (atual.getCNPJ().equals(String.valueOf(CPF)) ) {
+                    return atual;
+                }
+            }
+        } else {
+            while (elem.hasNext()) {
+                ClientePF atual = (ClientePF)elem.next();
+                if (atual.getCPF().equals(String.valueOf(CPF)) ) {
+                    return atual;
+                }
             }
         }
         return null;
@@ -114,7 +133,7 @@ public class Seguradora {
         Iterator<Sinistro> elem = this.listaSinistros.iterator();
         while (elem.hasNext()) {
             Sinistro atual = (Sinistro)elem.next();
-            if (atual.getCliente().getNome() == nome) {
+            if (atual.getCliente().getNome().equals(nome)) {
                 achou = true;
                 System.out.println(atual);
             }
@@ -122,19 +141,42 @@ public class Seguradora {
         return achou;
     }
 
-    public void listarSinistros() {
+    public ArrayList<Sinistro> listarSinistros(Cliente cliente) {
         Iterator<Sinistro> elem = this.listaSinistros.iterator();
-        
-        if (listaSinistros.isEmpty()) {
-            System.out.println("Não há nenehum sinistro cadastrado!");
-        } else {
-            while (elem.hasNext()) {
-                Sinistro atual = (Sinistro)elem.next();
-                System.out.println(atual);
-            }
+        ArrayList<Sinistro> lista_nova = new ArrayList<Sinistro>();
+        while (elem.hasNext()) {
+            Sinistro atual = (Sinistro)elem.next();
+            lista_nova.add(atual);
         }
+        return lista_nova;
     }
 
-    public float calcularReceita(){return 1.01f;}// TERMINAR
+    public double calcularPrecoSeguroCliente(Cliente cliente){
+        return (cliente.calculaScore() * (1 + listarSinistros(cliente).size()));
+    }
+
+    public double calcularReceita(){
+        double total = 0.0;
+        Iterator<Cliente> elem = this.listaClientes.iterator();
+        while (elem.hasNext()) {
+            Cliente atual = (Cliente)elem.next();
+            if (atual.isModificado()) {
+                atual.setPreco_seguro(calcularPrecoSeguroCliente(atual));
+            }
+            total += atual.getPreco_seguro();
+        }
+        return total;
+    }
+
+    public static Seguradora ident_Seguradora(LinkedList<Seguradora> lista, String nome) {
+        Iterator<Seguradora> elem = lista.iterator();
+        while (elem.hasNext()) {
+            Seguradora atual = (Seguradora)elem.next();
+            if (atual.getNome().equals(nome)) {
+                return atual;
+            }
+        }
+        return null;        
+    }
 
 }

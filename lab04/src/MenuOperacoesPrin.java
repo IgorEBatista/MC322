@@ -1,10 +1,10 @@
 public enum MenuOperacoesPrin {
     CADASTRAR (1) ,
     LISTAR (2) ,
-    SINISTRAR (3) ,    
-    TRANSFERIR (4) ,
-    CALCULAR (5) ,
-    EXCLUIR (6) ,
+    EXCLUIR (3) ,
+    SINISTRAR (4) ,    
+    TRANSFERIR (5) ,
+    CALCULAR (6) ,
     SAIR (0) ;
 
     public final int operacao ;

@@ -12,7 +12,7 @@ public class Sinistro {
 
     //Construtor
     
-    public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+    public Sinistro(Date data, String endereco, Seguradora seguradora, Cliente cliente, Veiculo veiculo) {
         this.id = serie + 100000;
         this.data = data;
         this.endereco = endereco;

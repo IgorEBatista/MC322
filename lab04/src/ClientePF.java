@@ -12,7 +12,7 @@ public class ClientePF extends Cliente{
 
     public ClientePF(String nome, String endereco, String cpf, String genero, Date dataLicenca, String educacao, Date dataNascimento, String classeEconomica){        
         super(nome, endereco);
-        this.CPF = cpf;
+        this.CPF = cpf.replaceAll("\\D", "");
         this.genero = genero;
         this.dataLicenca = dataLicenca;
         this.educacao = educacao;
@@ -79,7 +79,7 @@ public class ClientePF extends Cliente{
                 "\nClasse Economica: " + classeEconomica +"\n");
     }
 
-    public double calculaScore(Cliente cliente) { //TERMINAR
+    public double calculaScore() { //TERMINAR
         return 1.0;
     }
 }

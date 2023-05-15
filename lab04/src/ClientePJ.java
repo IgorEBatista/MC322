@@ -6,7 +6,7 @@ public class ClientePJ extends Cliente {
     
     public ClientePJ(String nome, String endereco, String CNPJ, Date dataFundacao) {
         super(nome, endereco);
-        this.CNPJ = CNPJ;
+        this.CNPJ = CNPJ.replaceAll("\\D", "");
         this.dataFundacao = dataFundacao;
     }    
     //Getters e Setters
@@ -23,7 +23,7 @@ public class ClientePJ extends Cliente {
 
     //Outros métodos
 
-    public double calculaScore(Cliente cliente) { //TERMINAR
+    public double calculaScore() { //TERMINAR
         return 1.0;
     }
 

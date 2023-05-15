@@ -126,4 +126,7 @@ public class Validacao {
         return true;
     }
 
+    public static boolean validaNome(String nome) {
+        return nome.matches("[A-Z][a-z]{1,}");
+    }
 }
