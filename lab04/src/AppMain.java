@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.Scanner;;
 
 public class AppMain {
     
@@ -252,8 +252,9 @@ public class AppMain {
                 ArrayList<String> infos = new ArrayList<String>();
                 ArrayList<Date> dias = new ArrayList<Date>();
                 //As listas acima foram criadas para facilitar a aquisição das informações sem um excesso de variáveis
-                
-                Boolean pf = false, pj = false, nome_ok, data_ok;
+                Cliente novo_Cli;
+                Seguradora seg;
+                Boolean pf = false, pj = false, nome_ok, data_ok, seg_encontrada;
                 //Obtendo CPF/CNPJ
                 System.out.println("Digite o CPF/CNPJ do cliente a ser cadastrado:");
                 do{   
@@ -303,22 +304,96 @@ public class AppMain {
                                 data_ok = false;
                             }
                         } while(!data_ok);
-
-                        //Falta terminar os menus
-
                     } else {
                         pj = Validacao.validarCNPJ(infos.get(0));
                         if (pj) {
-                            
+                            //Obtendo o nome do cliente
+                            System.out.println("Digite o nome do cliente a ser cadastrado:");
+                            do {
+                                infos.set(1, leitor.nextLine());
+                                nome_ok = Validacao.validaNome(infos.get(1));
+                                if (!nome_ok) {
+                                    System.out.println("Por favor, digite um nome válido:");
+                                }
+                            } while (!nome_ok);
+                            //Obtendo o endereço
+                            System.out.println("Digite o endereço do cliente a ser cadastrado:");
+                            infos.set(2, leitor.nextLine());
+                            //Obtem a data de nascimento
+                            System.out.println("Qual a data de fundacao da empresa cliente? (Digite a data no formato: \"dd/mm/yyyy\")");
+                            do{
+                                try {
+                                    dias.set(0, formato.parse(leitor.nextLine()));
+                                    data_ok = true;
+                                } catch (ParseException except) {
+                                    System.out.println("Data inválida!\nPor favor, digite a data no formato: \"dd/mm/yyyy\")\n");
+                                    data_ok = false;
+                                }
+                            } while(!data_ok);
                         } else {
                             System.out.println("O CPF/CNPJ não é válido! Por favor, verifique o número digitado:");
                         }
                     }
                 } while(!pf && !pj);
+                //Instanciando o cliente do tipo respectivo
+                if (pf) {
+                    novo_Cli = new ClientePF(infos.get(1),infos.get(2),infos.get(0),infos.get(3),dias.get(0),infos.get(4),dias.get(1),infos.get(5));
+                } else {
+                    novo_Cli = new ClientePJ(infos.get(1), infos.get(2), infos.get(0), dias.get(0));
+                }
+                //Descobrindo a seguradora na qual o cliente será cadastrado.
+                System.out.println("Digite o nome da Seguradora na qual o cliente será cadastrado:");
+                do{
+                    seg = Seguradora.ident_Seguradora(empresas, leitor.nextLine());
+                    if (seg == null) {
+                        System.out.println("Seguradora não encontrada, por favor, digite o nome corretamente:\nOpções:");
+                        for (Seguradora i: empresas){
+                            System.out.println(i.getNome());
+                        }
+                        seg_encontrada = false;
+                    } else {
+                        seg_encontrada = true;
+                    }
+                } while(!seg_encontrada);
+                seg.cadastrarCliente(novo_Cli);
+                System.out.println("Foi adicionado à seguradora " + seg.getNome() + " o seguinte cliente:\n" + novo_Cli.toString());
             }
 
             else if (escolha == MenuOperacoesCad.VEICULO.getOperacao()){
-                
+                Boolean achou = false;
+                Cliente cli = null;
+                Veiculo vei;
+                ArrayList<String> infos = new ArrayList<String>(); 
+                //Encontra o cliente que receberá o veículo
+                System.out.println("Digite o CPF/CNPJ do Cliente no qual o novo veículo será adicionado");
+                do{    
+                    leitura = leitor.nextLine();
+                    Iterator<Seguradora> segur = empresas.iterator();
+                    while (segur.hasNext() && !achou) {
+                        Seguradora atual = (Seguradora)segur.next();
+                        cli = atual.identClient(Long.parseLong(leitura.replaceAll("\\D", "")));
+                        if(cli != null){
+                            achou = true;
+                        }
+                    }
+                    if (!achou) {
+                        System.out.println("Nenhuma Seguradora possui esse cliente cadastrado, por favor, verifique os dados");
+                    }
+                }while(!achou);
+                //Obtem as outras informações do veículo
+                System.out.println("Digite a Placa do novo veículo");
+                infos.set(0, leitor.nextLine());
+                System.out.println("Digite a Marca do novo veículo");
+                infos.set(1, leitor.nextLine());
+                System.out.println("Digite o Modelo do novo veículo");
+                infos.set(2, leitor.nextLine());
+                System.out.println("Digite o Ano de Fabricação do novo veículo");
+                infos.set(3, leitor.nextLine());
+                //Instancia o veículo
+                vei = new Veiculo(infos.get(0), infos.get(1), infos.get(2), Integer.parseInt(infos.get(3)));
+                //Cadastrando o veiculo
+                cli.addVeiculo(vei);
+                System.out.println("O veículo de placa: " + vei.getplaca() + " foi adicionado ao cliente " + cli.getNome() + " com sucesso!");
             }
             else if (escolha == MenuOperacoesCad.SEGURADORA.getOperacao()){
                 

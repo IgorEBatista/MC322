@@ -54,17 +54,20 @@ public abstract class Cliente {
 
     public void setPreco_seguro(double preco_seguro) {
         this.preco_seguro = preco_seguro;
-        setModificado(false);
+        this.modificado = false;
     }
 
     //Outros metodos
 
     public void addVeiculo(Veiculo veiculo){
         lista_Veiculos.add(veiculo);
+        this.modificado = true;
     }
 
     public boolean remVeiculo(Veiculo veiculo){
-        return lista_Veiculos.remove(veiculo);
+        boolean mod = lista_Veiculos.remove(veiculo);
+        if (mod) this.modificado = true;
+        return mod;
     }    
 
     public Veiculo ident_Veiculo(String placa) {
