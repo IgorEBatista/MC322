@@ -76,10 +76,22 @@ public class ClientePF extends Cliente{
                 "\nData da Licenca: " + dataLicenca + 
                 "\nNível de Educacao: " + educacao + 
                 "\nData de Nascimento: " + dataNascimento + 
-                "\nClasse Economica: " + classeEconomica +"\n");
+                "\nClasse Economica: " + classeEconomica);
     }
 
-    public double calculaScore() { //TERMINAR
-        return 1.0;
+    public double calculaScore(){
+        Date agora = new Date();
+        int idade = agora.getYear() - dataNascimento.getYear();
+        double fator;
+
+        if (18 <= idade && idade < 30) {
+            fator = CalcSeguro.FATOR_18_30.getOperacao();
+        } else if (30 <= idade && idade <= 60) {
+            fator = CalcSeguro.FATOR_30_60.getOperacao();
+        } else {
+            fator = CalcSeguro.FATOR_60_90.getOperacao();
+        }
+        
+        return CalcSeguro.VALOR_BASE.getOperacao() * fator * this.getLista_Veiculos().size();
     }
 }

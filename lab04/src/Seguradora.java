@@ -115,7 +115,7 @@ public class Seguradora {
         // Lista determinados clientes
         Iterator<Cliente> elem = this.listaClientes.iterator();
         int tipo = 0;
-        if(tipoCliente == "ClientePJ"){ tipo = 1;}
+        if(tipoCliente.equals("ClientePJ")){ tipo = 1;}
         while (elem.hasNext()) {
             Cliente atual = (Cliente)elem.next();
             if ((tipo == 0 && atual instanceof ClientePF) || (tipo == 1 && atual instanceof ClientePJ)) {
@@ -149,6 +149,10 @@ public class Seguradora {
             lista_nova.add(atual);
         }
         return lista_nova;
+    }
+
+    public boolean removerSinistro(Sinistro sinistro) {
+        return this.listaSinistros.remove(sinistro);
     }
 
     public double calcularPrecoSeguroCliente(Cliente cliente){

@@ -23,12 +23,13 @@ public class AppMain {
         Date data_acidente = formato.parse("21/04/2023");
             
         //Verificando CPF e CNPJ
-
+        System.out.println("Validando o CPF: 833.719.110-47");
         System.out.println(Validacao.validarCPF("83371911047"));
+        System.out.println("Validando o CNPJ: 86.113.575/0001-36");
         System.out.println(Validacao.validarCNPJ("86113575000136"));
             
         //Criando 2 Clientes.
-        ClientePJ cliente_J1 = new ClientePJ("Lab's Corp", "Rua Roxo Moreira, nº42", "86113575000136", data_fundacao);
+        ClientePJ cliente_J1 = new ClientePJ("Lab's Corp", "Rua Roxo Moreira, nº42", "86113575000136", data_fundacao, 10);
         ClientePF cliente_F1 = new ClientePF("Joana","Rua Roxo Moreira, nº3000","613.292.220-24", "Feminino", 
                                             data_carteira1, "Superior Completo", data_nasc1, "Alta");
             
@@ -330,6 +331,14 @@ public class AppMain {
                                     data_ok = false;
                                 }
                             } while(!data_ok);
+                            //Obtendo o número de funcionários
+                            System.out.println("Digite o número de funcionários da empresa:");
+                            do{
+                                infos.set(3, leitor.nextLine());
+                                if (Integer.parseInt(infos.get(3)) <= 0) {
+                                    System.out.println("Por favor, digite um número válido de funcionários: (Inteiro e positivo)");
+                                }
+                            }while (Integer.parseInt(infos.get(3)) <= 0);
                         } else {
                             System.out.println("O CPF/CNPJ não é válido! Por favor, verifique o número digitado:");
                         }
@@ -339,7 +348,7 @@ public class AppMain {
                 if (pf) {
                     novo_Cli = new ClientePF(infos.get(1),infos.get(2),infos.get(0),infos.get(3),dias.get(0),infos.get(4),dias.get(1),infos.get(5));
                 } else {
-                    novo_Cli = new ClientePJ(infos.get(1), infos.get(2), infos.get(0), dias.get(0));
+                    novo_Cli = new ClientePJ(infos.get(1), infos.get(2), infos.get(0), dias.get(0), Integer.parseInt(infos.get(3)));
                 }
                 //Descobrindo a seguradora na qual o cliente será cadastrado.
                 System.out.println("Digite o nome da Seguradora na qual o cliente será cadastrado:");
@@ -358,7 +367,6 @@ public class AppMain {
                 seg.cadastrarCliente(novo_Cli);
                 System.out.println("Foi adicionado à seguradora " + seg.getNome() + " o seguinte cliente:\n" + novo_Cli.toString());
             }
-
             else if (escolha == MenuOperacoesCad.VEICULO.getOperacao()){
                 Boolean achou = false;
                 Cliente cli = null;
@@ -396,7 +404,35 @@ public class AppMain {
                 System.out.println("O veículo de placa: " + vei.getplaca() + " foi adicionado ao cliente " + cli.getNome() + " com sucesso!");
             }
             else if (escolha == MenuOperacoesCad.SEGURADORA.getOperacao()){
-                
+                Boolean nome_ok, num_ok;
+                Seguradora nova_seg;
+                ArrayList<String> infos = new ArrayList<String>(); 
+                //Obtendo o nome da nova Seguradora
+                System.out.println("Digite o nome da Seguradora a ser cadastrada:");
+                do {
+                    infos.set(0, leitor.nextLine());
+                    nome_ok = Validacao.validaNome(infos.get(1));
+                    if (!nome_ok) {
+                        System.out.println("Por favor, digite um nome válido: (Apenas letras são suportadas)");
+                    }
+                } while (!nome_ok);
+                //Obtendo o telefone da nova Seguradora
+                System.out.println("Digite o número de telefone da nova seguradora:");
+                do {
+                    infos.set(1, leitor.nextLine().replaceAll("\\D", ""));
+                    num_ok = Validacao.validaNome(infos.get(1));
+                    if (!num_ok) {
+                        System.out.println("Por favor, digite um número válido: (Telefones devem possuir no mínimo 8 dígitos numéricos)");
+                    }
+                } while (!num_ok);
+                //Obtendo os outros dados
+                System.out.println("Digite o email da nova seguradora");
+                infos.set(2, leitor.nextLine());
+                System.out.println("Digite o endereço da nova seguradora");
+                infos.set(3, leitor.nextLine());
+                //Instanciando e relacionando a seguradora
+                nova_seg = new Seguradora(infos.get(0), infos.get(1), infos.get(2), infos.get(3));
+                empresas.add(nova_seg);
             }
             else if (escolha != MenuOperacoesCad.VOLTAR.getOperacao()){
                 System.out.println("Por favor, as opções válidas são apenas números de 0 a 3 (inclusos).");
@@ -410,19 +446,50 @@ public class AppMain {
             escolha = leitor.nextInt();
             // Determina operação
             if (escolha == MenuOperacoesList.CLI_SEG.getOperacao()){
-                
+                for (Seguradora atual : empresas) {
+                    System.out.println("Listando os Clientes da Seguradora " + atual.getNome());
+                    System.out.println("Clientes do tipo \"Pessoa Física\" :");
+                    atual.listarClientes("ClientePF");
+                    System.out.println("Clientes do tipo \"Pessoa Jurídica\" :");
+                    atual.listarClientes("ClientePJ");
+                    System.out.println("");
+                }
             }
             else if (escolha == MenuOperacoesList.SIN_SEG.getOperacao()){
-                
+                for (Seguradora seg_atual : empresas) {
+                    System.out.println("Listando os Sinistros da Seguradora " + seg_atual.getNome());
+                    for (Sinistro sin_atual : seg_atual.getListaSinistros()) {
+                        System.out.println(sin_atual.toString());
+                    }
+                }
             }
             else if (escolha == MenuOperacoesList.SIN_CLI.getOperacao()){
-                
+                for (Seguradora seg_atual : empresas) {
+                    for (Cliente cli_atual : seg_atual.getListaClientes()) {
+                        System.out.println("Listando os Sinistros relacionados ao Cliente " + cli_atual.getNome());
+                        seg_atual.visualizarSinistro(cli_atual.getNome());
+                    }
+                }   
             }
             else if (escolha == MenuOperacoesList.VEI_SEG.getOperacao()){
-                
+                for (Seguradora seg_atual : empresas) {
+                    System.out.println("Listando os Veiculos relacionados a Seguradora " + seg_atual.getNome());
+                    for (Cliente cli_atual : seg_atual.getListaClientes()) {
+                        for (Veiculo vei_atual : cli_atual.getLista_Veiculos()){
+                            System.out.println(vei_atual.toString());
+                        }
+                    }
+                }
             }
             else if (escolha == MenuOperacoesList.VEI_CLI.getOperacao()){
-                
+                for (Seguradora seg_atual : empresas) {
+                    for (Cliente cli_atual : seg_atual.getListaClientes()) {
+                        System.out.println("Listando os Veiculos relacionados ao Cliente " + cli_atual.getNome());
+                        for (Veiculo vei_atual : cli_atual.getLista_Veiculos()){
+                            System.out.println(vei_atual.toString());
+                        }
+                    }
+                }
             }
             else if (escolha != MenuOperacoesList.VOLTAR.getOperacao()){
                 System.out.println("Por favor, as opções válidas são apenas números de 0 a 5 (inclusos).");
@@ -436,13 +503,83 @@ public class AppMain {
             escolha = leitor.nextInt();
             // Determina operação
             if (escolha == MenuOperacoesExcl.CLIENTE.getOperacao()){
-                ;
+                Cliente cli = null;
+                Seguradora seg = null;
+                Boolean  achou = false;
+                //Encontra o cliente que será excluído
+                System.out.println("Digite o CPF/CNPJ do Cliente que será excluído");
+                do{    
+                    leitura = leitor.nextLine();
+                    Iterator<Seguradora> segur = empresas.iterator();
+                    while (segur.hasNext() && !achou) {
+                        Seguradora atual = (Seguradora)segur.next();
+                        cli = atual.identClient(Long.parseLong(leitura.replaceAll("\\D", "")));
+                        if(cli != null){
+                            achou = true;
+                            seg = atual;
+                        }
+                    }
+                    if (!achou) {
+                        System.out.println("Nenhuma Seguradora possui esse cliente cadastrado, por favor, verifique os dados");
+                    }
+                }while(!achou);
+                seg.removerCliente(cli.getNome());
+                System.out.println("O cliente foi removido com sucesso!");
             }
             else if (escolha == MenuOperacoesExcl.VEICULO.getOperacao()){
-                ;
+                Veiculo vei = null;
+                Cliente cli = null;
+                Boolean  achou = false;
+                //Encontra o cliente que será excluído
+                System.out.println("Digite a Placa do Veículo que será excluído");
+                do{    
+                    leitura = leitor.nextLine();
+                    Iterator<Seguradora> segur = empresas.iterator();
+                    while (segur.hasNext() && !achou) {
+                        Seguradora seg_atual = (Seguradora)segur.next();
+                        Iterator<Cliente> clientes = seg_atual.getListaClientes().iterator();
+                        while (clientes.hasNext() && !achou) {
+                            Cliente cli_atual = (Cliente)clientes.next();
+                            vei = cli_atual.ident_Veiculo(leitura);
+                            if(vei != null){
+                                achou = true;
+                                cli = cli_atual;
+                            }
+                        }
+                    }
+                    if (!achou) {
+                        System.out.println("Veículo não encontrado, por favor, verifique os dados");
+                    }
+                }while(!achou);
+                cli.remVeiculo(vei);
+                System.out.println("O veículo foi removido com sucesso!");
             }
             else if (escolha == MenuOperacoesExcl.SINISTRO.getOperacao()){
-                ;
+                Seguradora seg = null;
+                Sinistro sin = null;
+                Boolean achou = false;
+                //Encontra o Sinistro que será excluído
+                System.out.println("Digite o ID do Sinistro que será excluído");
+                do{    
+                    leitura = leitor.nextLine();
+                    Iterator<Seguradora> segur = empresas.iterator();
+                    while (segur.hasNext() && !achou) {
+                        Seguradora seg_atual = (Seguradora)segur.next();
+                        Iterator<Sinistro> sinist = seg_atual.getListaSinistros().iterator();
+                        while (sinist.hasNext() && !achou) {
+                            Sinistro sin_atual = (Sinistro)sinist.next();
+                            if(sin_atual.getid() == Integer.parseInt(leitura)){
+                                achou = true;
+                                sin = sin_atual;
+                                seg = seg_atual;
+                            }
+                        }
+                    }
+                    if (!achou) {
+                        System.out.println("Sinistro não encontrado, por favor, verifique os dados");
+                    }
+                }while(!achou);
+                seg.removerSinistro(sin);
             }
             else if (escolha != MenuOperacoesExcl.VOLTAR.getOperacao()){
                 System.out.println("Por favor, as opções válidas são apenas números de 0 a 3 (inclusos).");

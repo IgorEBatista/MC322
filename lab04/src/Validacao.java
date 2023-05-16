@@ -129,4 +129,7 @@ public class Validacao {
     public static boolean validaNome(String nome) {
         return nome.matches("[A-Z][a-z]{1,}");
     }
+    public static boolean validaTelef(String tlf) {
+        return tlf.length() >= 8;
+    }
 }
