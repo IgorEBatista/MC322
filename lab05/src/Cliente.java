@@ -4,7 +4,6 @@ import java.util.LinkedList;
 public abstract class Cliente {
     private String nome;
     private String endereco;
-    private LinkedList<Veiculo> lista_Veiculos;
     private boolean modificado;
     private double preco_seguro;
     
@@ -59,16 +58,6 @@ public abstract class Cliente {
 
     //Outros metodos
 
-    public void addVeiculo(Veiculo veiculo){
-        lista_Veiculos.add(veiculo);
-        this.modificado = true;
-    }
-
-    public boolean remVeiculo(Veiculo veiculo){
-        boolean mod = lista_Veiculos.remove(veiculo);
-        if (mod) this.modificado = true;
-        return mod;
-    }    
 
     public Veiculo ident_Veiculo(String placa) {
         Iterator<Veiculo> elem = this.lista_Veiculos.iterator();

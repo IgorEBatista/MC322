@@ -37,6 +37,22 @@ public class ClientePJ extends Cliente {
         return CalcSeguro.VALOR_BASE.getOperacao() * (1 + (num_funcionarios/100) * getLista_Veiculos().size());
     }
 
+
+    public boolean atualizarFrota(String code, Veiculo veic, Frota frota, int modo){
+        boolean agiu = true;
+
+        if (modo == 1) {
+            frota.addVeiculo(veic);
+        } else if (modo == 2){
+            agiu = frota.remVeiculo(veic);
+        } else {
+            System.out.println("Opção não encontrada");
+            agiu = false;
+        }
+        this.setModificado(agiu);
+        return agiu;
+    }
+
     public String toString() {
         return (super.toString() + 
                 "\nCNPJ: " + CNPJ + 

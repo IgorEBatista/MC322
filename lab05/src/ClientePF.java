@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.LinkedList;
 
 public class ClientePF extends Cliente{
     private final String CPF;
@@ -7,6 +8,7 @@ public class ClientePF extends Cliente{
     private String educacao;
     private Date dataNascimento;
     private String classeEconomica;
+    private LinkedList<Veiculo> lista_Veiculos;
 
     //Contrutor
 
@@ -68,6 +70,19 @@ public class ClientePF extends Cliente{
 
 
     //Outros métodos
+
+
+    public void cadastrarVeiculo(Veiculo veiculo){
+        lista_Veiculos.add(veiculo);
+        this.setModificado(true);
+    }
+
+    public boolean removerVeiculo(Veiculo veiculo){
+        boolean mod = lista_Veiculos.remove(veiculo);
+        if (mod) this.setModificado(true);
+        return mod;
+    }    
+
 
     public String toString() {
         return (super.toString() + 

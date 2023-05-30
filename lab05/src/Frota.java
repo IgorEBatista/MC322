@@ -3,17 +3,17 @@ import java.util.ArrayList;
 public class Frota {
     
     private String code;
-    private ArrayList veiculos;
+    private ArrayList<Veiculo> lista_veiculos;
 
     //Constructors
     public Frota(String code) {
         this.code = code;
-        this.veiculos = new ArrayList<Veiculo>();
+        this.lista_veiculos = new ArrayList<Veiculo>();
     }
 
-    public Frota(String code, ArrayList veiculos) {
+    public Frota(String code, ArrayList<Veiculo> veiculos) {
         this.code = code;
-        this.veiculos = veiculos;
+        this.lista_veiculos = veiculos;
     }
     
     
@@ -26,15 +26,28 @@ public class Frota {
         this.code = code;
     }
 
-    public ArrayList getVeiculos() {
-        return veiculos;
+    public ArrayList<Veiculo> getLista_veiculos() {
+        return lista_veiculos;
     }
 
-    public void setVeiculos(ArrayList veiculos) {
-        this.veiculos = veiculos;
+    public void setLista_veiculos(ArrayList<Veiculo> veiculos) {
+        this.lista_veiculos = veiculos;
     }
 
     // Outros métodos
+
+
+    public void addVeiculo(Veiculo veiculo){
+        lista_veiculos.add(veiculo);
+    }
+
+    public boolean remVeiculo(Veiculo veiculo){
+        boolean mod = lista_veiculos.remove(veiculo);
+        return mod;
+    }    
+
+
+
     public String toString() {
         
     }
