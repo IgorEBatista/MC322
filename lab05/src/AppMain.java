@@ -95,7 +95,13 @@ public class AppMain {
                                 "\n2-Listar\n3-Excluir\n4-Gerar Sinistro\n"+
                                 "5-Transferir Seguro\n6-Calcular Receita da Seguradora\n0-Sair");
             // Lê escolha do usuário
-            escolha = Integer.parseInt(leitor.nextLine());
+            try {
+                escolha = Integer.parseInt(leitor.nextLine());    
+            } catch (Exception e) {
+                // TODO: handle exception
+                terminar
+            }
+            
             // Determina operação
             if (escolha == MenuOperacoesPrin.CADASTRAR.getOperacao()){
                 menuCad();
