@@ -4,6 +4,8 @@ import java.util.LinkedList;
 public abstract class Cliente {
     private String nome;
     private String endereco;
+    private String telefone;
+    private String email;
     private boolean modificado;
     private double preco_seguro;
     
@@ -13,7 +15,6 @@ public abstract class Cliente {
     public Cliente (String nome, String endereco){
         this.nome = nome;
         this.endereco = endereco;
-        this.lista_Veiculos = new LinkedList<Veiculo>();
     }
     
     // Getters e setters
@@ -34,9 +35,6 @@ public abstract class Cliente {
         this.endereco = endereco;
     }
     
-    public LinkedList<Veiculo> getLista_Veiculos() {
-        return lista_Veiculos;
-    }
 
     public boolean isModificado() {
         return modificado;
@@ -59,7 +57,7 @@ public abstract class Cliente {
     //Outros metodos
 
 
-    public Veiculo ident_Veiculo(String placa) {
+    public abstract Veiculo ident_Veiculo(String placa) { //TODO alterar
         Iterator<Veiculo> elem = this.lista_Veiculos.iterator();
         while (elem.hasNext()) {
             Veiculo atual = (Veiculo)elem.next();

@@ -94,7 +94,7 @@ public class ClientePF extends Cliente{
                 "\nClasse Economica: " + classeEconomica);
     }
 
-    public double calculaScore(){
+    public double calculaScore(){ //TODO alterar
         Date agora = new Date();
         int idade = agora.getYear() - dataNascimento.getYear();
         double fator;

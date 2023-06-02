@@ -81,11 +81,15 @@ public class ClientePJ extends Cliente {
         return agiu;
     }
 
-    public ArrayList<Veiculo> getVeiculosPorFrota() {
-        terminar
+    public ArrayList<Veiculo> getVeiculosPorFrota(String code) {
+        Frota frota = enc_Frota(code);
+        if (frota != null) {
+            return frota.getLista_veiculos();
+        }
+        return null;
     }
 
-    public double calculaScore() {
+    public double calculaScore() { //TODO alterar
         return CalcSeguro.VALOR_BASE.getOperacao() * (1 + (num_funcionarios/100) * getLista_Veiculos().size());
     }
 
