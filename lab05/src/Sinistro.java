@@ -6,19 +6,17 @@ public class Sinistro {
     private final int id;
     private Date data;
     private String endereco;
-    private Seguradora seguradora;
-    private Veiculo veiculo;
-    private Cliente cliente;
+    private Condutor condutor;
+    private Seguro seguro;
 
     //Construtor
     
-    public Sinistro(Date data, String endereco, Seguradora seguradora, Cliente cliente, Veiculo veiculo) {
+    public Sinistro(Date data, String endereco,  Condutor condutor, Seguro seguro) {
         this.id = serie + 100000;
         this.data = data;
         this.endereco = endereco;
-        this.seguradora = seguradora;
-        this.veiculo = veiculo;
-        this.cliente = cliente;
+        this.seguro = seguro;
+        this.condutor = condutor;
         serie++;
     }
 
@@ -43,28 +41,20 @@ public class Sinistro {
         this.endereco = endereco;
     }
 
-    public Seguradora getSeguradora() {
-        return seguradora;
+    public Seguro getseguro() {
+        return seguro;
     }
 
-    public void setSeguradora(Seguradora seguradora) {
-        this.seguradora = seguradora;
+    public void setseguro(Seguro seguro) {
+        this.seguro = seguro;
     }
 
-    public Veiculo getVeiculo() {
-        return veiculo;
+    public Condutor getcondutor() {
+        return condutor;
     }
 
-    public void setVeiculo(Veiculo veiculo) {
-        this.veiculo = veiculo;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setcondutor(Condutor condutor) {
+        this.condutor = condutor;
     }
     
     //Outros Métodos
@@ -74,8 +64,7 @@ public class Sinistro {
         return ("ID: " + getid() + 
                 "\nData: " + getdata() + 
                 "\nEndereço: " + getendereco() + 
-                "\nSeguradora: " + getSeguradora() + 
-                "\nVeículo: " + getVeiculo() + 
-                "\nCliente: " + getCliente().getNome());
+                "\nSeguro: " + getseguro() + 
+                "\nCondutor: " + getcondutor().getNome());
     }
 }
