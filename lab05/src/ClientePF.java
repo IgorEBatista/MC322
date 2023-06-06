@@ -1,5 +1,6 @@
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 public class ClientePF extends Cliente{
     private final String CPF;
@@ -8,10 +9,10 @@ public class ClientePF extends Cliente{
     private String educacao;
     private Date dataNascimento;
     private String classeEconomica;
-    private LinkedList<Veiculo> lista_Veiculos;
+    private ArrayList<Veiculo> listaVeiculos;
 
     //Contrutor
-
+    
     public ClientePF(String nome, String endereco, String cpf, String genero, Date dataLicenca, String educacao, Date dataNascimento, String classeEconomica){        
         super(nome, endereco);
         this.CPF = cpf.replaceAll("\\D", "");
@@ -20,6 +21,7 @@ public class ClientePF extends Cliente{
         this.educacao = educacao;
         this.dataNascimento = dataNascimento;
         this.classeEconomica = classeEconomica;
+        this.listaVeiculos = new ArrayList<Veiculo>();
     }
 
     //Getters e Setters
@@ -68,45 +70,50 @@ public class ClientePF extends Cliente{
         this.classeEconomica = classeEconomica;
     }
 
+    public ArrayList<Veiculo> getlistaVeiculos() {
+        return listaVeiculos;
+    }
+
+    public void setlistaVeiculos(ArrayList<Veiculo> listaVeiculos) {
+        this.listaVeiculos = listaVeiculos;
+    }
+
 
     //Outros métodos
 
 
     public void cadastrarVeiculo(Veiculo veiculo){
-        lista_Veiculos.add(veiculo);
+        listaVeiculos.add(veiculo);
         this.setModificado(true);
     }
 
     public boolean removerVeiculo(Veiculo veiculo){
-        boolean mod = lista_Veiculos.remove(veiculo);
+        boolean mod = listaVeiculos.remove(veiculo);
         if (mod) this.setModificado(true);
         return mod;
     }    
 
 
     public String toString() {
-        return (super.toString() + 
-                "\nCPF: " + CPF + 
-                "\nGenero: " + genero + 
-                "\nData da Licenca: " + dataLicenca + 
-                "\nNível de Educacao: " + educacao + 
-                "\nData de Nascimento: " + dataNascimento + 
-                "\nClasse Economica: " + classeEconomica);
+        String texto = super.toString();
+        texto = texto.concat("\nCPF: " + CPF); 
+        texto = texto.concat("\nGenero: " + genero);
+        texto = texto.concat("\nData da Licenca: " + dataLicenca);
+        texto = texto.concat("\nNível de Educacao: " + educacao);
+        texto = texto.concat("\nData de Nascimento: " + dataNascimento);
+        texto = texto.concat("\nClasse Economica: " + classeEconomica);
+        return texto;
     }
 
-    public double calculaScore(){ //TODO alterar
-        Date agora = new Date();
-        int idade = agora.getYear() - dataNascimento.getYear();
-        double fator;
-
-        if (18 <= idade && idade < 30) {
-            fator = CalcSeguro.FATOR_18_30.getOperacao();
-        } else if (30 <= idade && idade <= 60) {
-            fator = CalcSeguro.FATOR_30_60.getOperacao();
-        } else {
-            fator = CalcSeguro.FATOR_60_90.getOperacao();
+    public Veiculo ident_Veiculo(String placa) {
+        Iterator<Veiculo> elem = this.listaVeiculos.iterator();
+        while (elem.hasNext()) {
+            Veiculo atual = (Veiculo)elem.next();
+            if (atual.getplaca().equals(placa)) {
+                return atual;
+            }
         }
+        return null;
         
-        return CalcSeguro.VALOR_BASE.getOperacao() * fator * this.getLista_Veiculos().size();
     }
 }

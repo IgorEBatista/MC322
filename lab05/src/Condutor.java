@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 public class Condutor {
     private final String CPF;
@@ -78,11 +79,29 @@ public class Condutor {
 
     //Outros métodos
 
+    public static Condutor ident_Condutor(String CPF, ArrayList<Condutor> listaCondutors) {
+        Iterator<Condutor> elem = listaCondutors.iterator();
+        while (elem.hasNext()) {
+            Condutor atual = (Condutor)elem.next();
+            if (atual.getCPF().equals(CPF)) {
+                return atual;
+            }
+        }
+        return null;
+    }
+
     public boolean adicionarSinistro(Sinistro sinistro) {
         return this.listaSinistros.add(sinistro);
     }
 
     public String toString() {
-        
+        String texto = "Nome: " + nome;
+        texto = texto.concat("\nCPF: " + CPF); 
+        texto = texto.concat("\nData de Nascimento: " + dataNascimento);
+        texto = texto.concat("\nTelefone: " + telefone);
+        texto = texto.concat("\nEmail: " + email);
+        texto = texto.concat("\nEndereço: " + endereco);
+        texto = texto.concat("\nNumero de Sinistros: " + listaSinistros.size());
+        return texto;
     }
 }

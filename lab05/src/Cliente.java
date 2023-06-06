@@ -1,13 +1,12 @@
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public abstract class Cliente {
     private String nome;
     private String endereco;
     private String telefone;
     private String email;
+
     private boolean modificado;
-    private double preco_seguro;
     
     // Construtor
 
@@ -44,36 +43,20 @@ public abstract class Cliente {
         this.modificado = modificado;
     }
 
-    
-    public double getPreco_seguro() {
-        return preco_seguro;
-    }
-
-    public void setPreco_seguro(double preco_seguro) {
-        this.preco_seguro = preco_seguro;
-        this.modificado = false;
-    }
+    public abstract ArrayList<Veiculo> getlistaVeiculos();
 
     //Outros metodos
 
 
-    public abstract Veiculo ident_Veiculo(String placa) { //TODO alterar
-        Iterator<Veiculo> elem = this.lista_Veiculos.iterator();
-        while (elem.hasNext()) {
-            Veiculo atual = (Veiculo)elem.next();
-            if (atual.getplaca().equals(placa)) {
-                return atual;
-            }
-        }
-        return null;
-    }
-
-    public abstract double calculaScore();
+    public abstract Veiculo ident_Veiculo(String placa);
 
     public String toString() {
-    //Controle de string
-        return ("Nome: " + getNome() + 
-                "\nEndereço: " + getEndereco());
-    }
+        //Controle de string
+        String texto = "Nome: " + nome;
+        texto = texto.concat("\nEndereço: " + endereco);
+        texto = texto.concat("\nTelefone: " + telefone);
+        texto = texto.concat("\nEmail: " + email);
+        return texto;    
     
+    }
 }

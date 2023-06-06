@@ -3,8 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Scanner;;
+import java.util.Scanner;
 
 public class AppMain {
     
@@ -12,74 +11,97 @@ public class AppMain {
     private static int escolha;
     private static String leitura;
     private static SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-    private static LinkedList<Seguradora> empresas = new LinkedList<Seguradora>();
+    private static ArrayList<Seguradora> empresas = new ArrayList<Seguradora>();
 
     public static void main(String[] args) throws ParseException {
         
         //Declaracao de datas
         Date data_fundacao = formato.parse("01/01/2000");
-        Date data_carteira1 = formato.parse("20/04/2023");
+        Date data_carteira1 = formato.parse("20/06/2023");
         Date data_nasc1 = formato.parse("29/02/2000");
-        Date data_acidente = formato.parse("21/04/2023");
+        Date data_nasc2 = formato.parse("23/01/2001");
+        Date data_acidente = formato.parse("21/06/2023");
             
         //Verificando CPF e CNPJ
         System.out.println("Validando o CPF: 833.719.110-47");
         System.out.println(Validacao.validarCPF("83371911047"));
         System.out.println("Validando o CNPJ: 86.113.575/0001-36");
         System.out.println(Validacao.validarCNPJ("86113575000136"));
-            
+        
+        //Criando Seguradora
+        Seguradora seguradora1 = new Seguradora("44620903000140","IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
+        empresas.add(seguradora1);
+        System.out.println();
+        System.out.println("Criando nova Seguradora: " + seguradora1.toString());
+        Seguradora seguradora2 = new Seguradora("18108138000174","IC2 Seguros", "3521-5839", "ic2_seguros@gmail.com", "Av. Albert Einstein, 1252");
+        empresas.add(seguradora2);
+        
         //Criando 2 Clientes.
         ClientePJ cliente_J1 = new ClientePJ("Lab's Corp", "Rua Roxo Moreira, nº42", "86113575000136", data_fundacao, 10);
         ClientePF cliente_F1 = new ClientePF("Joana","Rua Roxo Moreira, nº3000","613.292.220-24", "Feminino", 
-                                            data_carteira1, "Superior Completo", data_nasc1, "Alta");
-            
-            
+        data_carteira1, "Superior Completo", data_nasc1, "Alta");
+        
+        //Cadastrando Clientes na Seguradora
+        seguradora1.cadastrarCliente(cliente_J1);
+        System.out.println();
+        System.out.println("Cadastrando novo cliente na seguradora: " + seguradora1.getListaClientes().get(0));
+        seguradora1.cadastrarCliente(cliente_F1);
+        
         //Criando Veículos
         Veiculo veiculo0 = new Veiculo("LAB0O02", "MC", "322A", 2000);
+        System.out.println();
+        System.out.println("Criando novo veículo: " + veiculo0);
         Veiculo veiculo1 = new Veiculo("LAB1O02", "MC", "322A", 2001);
-
-            
-        //Criando Seguradora
-        Seguradora seguradora = new Seguradora("IC Seguros", "3521-5838", "ic_seguros@gmail.com", "Av. Albert Einstein, 1251");
-        empresas.add(seguradora);
-        //Cadastrando Clientes na Seguradora
-
-        seguradora.cadastrarCliente(cliente_J1);
-        seguradora.cadastrarCliente(cliente_F1);
-
-        //Cadastrando Veículos
-        cliente_J1.addVeiculo(veiculo0);
-        cliente_F1.addVeiculo(veiculo1);
-            
-        //Cadastrando Sinistros
-        Sinistro sinistro1 = new Sinistro(data_acidente,"Rua da Reitoria, 109", seguradora, cliente_J1, veiculo0);
-        Sinistro sinistro2 = new Sinistro(data_acidente,"Rua da Reitoria, 110", seguradora, cliente_F1, veiculo1);
-
+        Veiculo veiculo2 = new Veiculo("LAB4O03", "MC", "322A", 2004);
+        Veiculo veiculo3 = new Veiculo("LAB5O03", "MC", "322A", 2005);
         
-        seguradora.gerarSinistro(sinistro1);
-        seguradora.gerarSinistro(sinistro2);
-
-            
-        //Removendo um Cliente
-
-        seguradora.removerCliente("Pedro");
-
+        //Cadastrando Veículo PF
+        cliente_F1.cadastrarVeiculo(veiculo0);
+        cliente_F1.cadastrarVeiculo(veiculo1);
+        
+        //Criando Frota
+        Frota frota0 = new Frota("frota0", veiculo2);
+        cliente_J1.cadastrarFrota(frota0);
+        System.out.println();
+        System.out.println("Criando nova frota: " + frota0);
+        //Adicionando veículo à frota existente:
+        cliente_J1.atualizarFrota("frota0", veiculo3, 1 );
+        
+        //Criando seguros PF:
+        seguradora1.gerarSeguro(cliente_F1, veiculo1);
+        seguradora1.gerarSeguro(cliente_F1, veiculo0);
+        
+        //Criando seguros PJ:
+        seguradora1.gerarSeguro(cliente_J1, frota0);
+        System.out.println();
+        System.out.println("Criando seguro PJ: " + seguradora1.getListaSeguros().get(2));
+        
+        //Adicionando um condutor ao Cliente PF
+        Condutor condutor0 = new Condutor("36954878448","Alícia Assis", "Rua Raimundo de Oliveira, 510", "8427459617", "alicia-assis78@mpcnet.com.br", data_nasc2);
+        seguradora1.getListaSeguros().get(0).autorizarCondutor(condutor0);
+        System.out.println();
+        System.out.println("Novo condutor autorizado: " + condutor0);
+        
+        //Cadastrando Sinistros        
+        seguradora1.getListaSeguros().get(0).gerarSinistro(data_acidente, "Rua da Reitoria, 109", condutor0);
+        seguradora1.getListaSeguros().get(2).gerarSinistro(data_acidente, "Rua da Reitoria, 110", null);
+        
         //Visualizando Listas
-
+        
         System.out.println("Listando Clientes Pessoa Juridica:\n");
-        seguradora.listarClientes("ClientePJ");
+        seguradora1.listarClientes("ClientePJ");
         System.out.println("Listando Clientes Pessoa Fisica:\n");
-        seguradora.listarClientes("ClientePF");
+        seguradora1.listarClientes("ClientePF");
         System.out.println("Listando Todos os Sinistros:\n");
-        ArrayList<Sinistro> list_Sin = seguradora.getListaSinistros();
-        for(Sinistro i : list_Sin){
-            System.out.println(i.toString());
+        ArrayList<Sinistro> list_Sin = new ArrayList<Sinistro>();
+        for (Cliente cliente : seguradora1.getListaClientes()) {
+            list_Sin.addAll(seguradora1.getSinistrosPorCliente(cliente));
         }
-        System.out.println("Listando os sinistros envolvendo \"Joana\":\n");
-        seguradora.visualizarSinistro("Joana");
-        System.out.println("Listando os sinistros envolvendo \"Lab's Corp\":\n");
-        seguradora.visualizarSinistro("Lab's Corp");
-        System.out.println("A receita da seguradora \"IC Seguros\" é:" + seguradora.calcularReceita() + "\n");
+        for(Sinistro i : list_Sin){
+            System.out.println(i);
+        }
+        System.out.println();
+        System.out.println("A receita da seguradora \"IC Seguros\" é:" + seguradora1.calcularReceita() + "\n");
 
         //Chamando o menu interativo
 
@@ -98,24 +120,27 @@ public class AppMain {
             try {
                 escolha = Integer.parseInt(leitor.nextLine());    
             } catch (Exception e) {
-                // TODO: handle exception
-                terminar
+                escolha = -1;
             }
             
             // Determina operação
             if (escolha == MenuOperacoesPrin.CADASTRAR.getOperacao()){
+                System.out.println("Pressione a opção correspondente:\n"+"1-Cliente"+
+                                "\n2-Veiculo\n3-Seguradora\n0-Sair");
                 menuCad();
             }
             else if (escolha == MenuOperacoesPrin.LISTAR.getOperacao()){
+                System.out.println("Pressione a opção correspondente:\n"+"1-Clientes por Seguradora"+
+                                "\n2-Sinistros por Seguradora\n3-Sinistros por Cliente\n4-Veículos por seguradora\n"+
+                                "5-Veículos por cliente\n0-Sair");
                 menuList();
             }
             else if (escolha == MenuOperacoesPrin.SINISTRAR.getOperacao()){
                 Boolean em_opera;
-                Sinistro novo_Sin;
                 Date data = null;
-                Seguradora seg;
-                Cliente cli;
-                Veiculo vei;
+                Seguradora seguradora;
+                Condutor cond;
+                Seguro seguro;
                 String end;
                 //Obtem a data do ocorrido
                 System.out.println("Qual dia aconteceu o sinistro? (Digite a data no formato: \"dd/mm/yyyy\")");
@@ -132,59 +157,64 @@ public class AppMain {
                 System.out.println("Qual endereço de onde aconteceu o sinistro?");
                 end = leitor.nextLine();
                 //Obtem a seguradora responsavel
-                System.out.println("Digite o nome da seguradora na foi feito o contrato:");
+                System.out.println("Digite o nome da seguradora na qual foi feito o contrato:");
                 do{
-                    seg = Seguradora.ident_Seguradora(empresas, leitor.nextLine());
-                    if (seg == null) {
+                    seguradora = Seguradora.ident_Seguradora(empresas, leitor.nextLine());
+                    if (seguradora == null) {
                         System.out.println("Seguradora não encontrada, por favor, digite o nome corretamente:");
                         em_opera = true;
                     } else {
                         em_opera = false;
                     }
                 } while(em_opera);
-                //Obtem o cliente envolvido
-                System.out.println("Digite o CPF/CNPJ do cliente envolvido:");
-                do{
-                    cli = seg.identClient(Long.parseLong(leitor.nextLine().replaceAll("\\D", "")));
-                    if (cli == null) {
-                        System.out.println("Cliente não encontrado, por favor, digite o CPF/CNPJ corretamente:");
-                        em_opera = true;
-                    } else {
-                        em_opera = false;
-                    }
-                } while(em_opera);
-                //Obtem o veículo envolvido
+                
+                //Obtem o seguro do veículo envolvido
                 System.out.println("Digite a PLACA do Veículo envolvido:");
                 do{
-                    vei = cli.ident_Veiculo(leitor.nextLine());
-                    if (vei == null) {
-                        System.out.println( cli.getNome() + " não possui esse veículo, por favor, verifique a placa digitada");
+                    seguro = seguradora.identSeguro(leitor.nextLine());
+                    if (seguro == null) {
+                        System.out.println( "Esse veículo não foi encontrado, por favor, verifique a placa digitada");
                         em_opera = true;
                     } else {
                         em_opera = false;
                     }
                 } while(em_opera);
+                
+                //Obtem o condutor relacionado
+                System.out.println("Digite o CPF do condutor envolvido: (Digote 0 caso não haja.)");
+                do{
+                    String leitura = leitor.nextLine();
+                    cond = seguro.identCondutor(Validacao.limpaNum(leitura));
+                    
+                    if (cond == null && leitura != "0" ) {
+                        System.out.println("Condutor não encontrado, por favor, digite o CPF corretamente:");
+                        em_opera = true;
+                    } else {
+                        em_opera = false;
+                    }
+                } while(em_opera);
+                
 
                 //Gera o sinistro e cadastra na seguradora correspondente.
-                novo_Sin = new Sinistro(data, end, seg, cli, vei);
-                if(seg.gerarSinistro(novo_Sin)){
-                    System.out.println("O Sinistro foi cadastrado com sucesso! Confira os detalhes:\n" + novo_Sin.toString());
-                }
+                seguro.gerarSinistro(data, end, cond);
+                System.out.println("O Sinistro foi cadastrado com sucesso! Confira os detalhes:\n" + seguro.getListaSinistros().get(seguro.getListaSinistros().size() - 1));
             }
+
             else if (escolha == MenuOperacoesPrin.TRANSFERIR.getOperacao()){
-                int i = 0;
                 Boolean achou = false;
                 Cliente cli_Ant = null, cli_Nov = null;
+                Seguradora seguradora1 = null;
                 //Encontra o primeiro cliente
-                System.out.println("Digite o CPF/CNPJ do ANTIGO proprietário");
+                System.out.println("Digite o CPF/CNPJ do ANTIGO segurado");
                 do{    
                     leitura = leitor.nextLine();
                     Iterator<Seguradora> segur = empresas.iterator();
                     while (segur.hasNext() && !achou) {
                         Seguradora atual = (Seguradora)segur.next();
-                        cli_Ant = atual.identClient(Long.parseLong(leitura.replaceAll("\\D", "")));
+                        cli_Ant = atual.identClient(leitura.replaceAll("\\D", ""));
                         if(cli_Ant != null){
                             achou = true;
+                            seguradora1 = atual;
                         }
                     }
                     if (!achou) {
@@ -193,13 +223,13 @@ public class AppMain {
                 }while(!achou);
                 achou = false;
                 //Encontra o segundo cliente
-                System.out.println("Digite o CPF/CNPJ do NOVO proprietário");
+                System.out.println("Digite o CPF/CNPJ do NOVO segurado");
                 do{    
                     leitura = leitor.nextLine();
                     Iterator<Seguradora> segur = empresas.iterator();
                     while (segur.hasNext() && !achou) {
                         Seguradora atual = (Seguradora)segur.next();
-                        cli_Nov = atual.identClient(Long.parseLong(leitura.replaceAll("\\D", "")));
+                        cli_Nov = atual.identClient(leitura.replaceAll("\\D", ""));
                         if(cli_Nov != null){
                             achou = true;
                         }
@@ -209,15 +239,13 @@ public class AppMain {
                     }
                 }while(!achou);
 
-                //Realiza a transferência dos veiculos
-                Iterator<Veiculo> lista_Orig = cli_Ant.getLista_Veiculos().iterator();
-                while (lista_Orig.hasNext()) {
-                    Veiculo atual = (Veiculo)lista_Orig.next();
-                    cli_Nov.addVeiculo(atual);
-                    cli_Ant.remVeiculo(atual);
-                    i++;
+                //Realiza a transferência dos seguros
+                for (Seguro seguro : seguradora1.getListaSeguros()) {
+                    if (seguro.getCliente().equals(cli_Ant)) {
+                        seguro.setCliente(cli_Nov);
+                    }
                 }
-                System.out.println("Foram transferidos " + i + " veículos com sucesso!");
+                System.out.println("Foram transferidos " + " veículos com sucesso!");
             }
             else if (escolha == MenuOperacoesPrin.CALCULAR.getOperacao()){
                 Boolean em_opera;
@@ -242,6 +270,8 @@ public class AppMain {
                 System.out.println("A Seguradora " + seg.getNome() + " tem uma receita de: R$" + renda);
             }
             else if (escolha == MenuOperacoesPrin.EXCLUIR.getOperacao()){
+                System.out.println("Pressione a opção correspondente:\n"+"1-Cliente"+
+                                "\n2-Veiculo\n0-Sair");
                 menuExcl();
             }
             else if (escolha != MenuOperacoesPrin.SAIR.getOperacao()){
@@ -253,7 +283,11 @@ public class AppMain {
     private static void menuCad() {
         do {
             // Lê escolha do usuário
-            escolha = leitor.nextInt();
+            try {
+                escolha = Integer.parseInt(leitor.nextLine());
+            } catch (Exception e) {
+                escolha = -1;
+            }
             // Determina operação
             if (escolha == MenuOperacoesCad.CLIENTE.getOperacao()){
                 ArrayList<String> infos = new ArrayList<String>();
@@ -385,7 +419,7 @@ public class AppMain {
                     Iterator<Seguradora> segur = empresas.iterator();
                     while (segur.hasNext() && !achou) {
                         Seguradora atual = (Seguradora)segur.next();
-                        cli = atual.identClient(Long.parseLong(leitura.replaceAll("\\D", "")));
+                        cli = atual.identClient(leitura.replaceAll("\\D", ""));
                         if(cli != null){
                             achou = true;
                         }
@@ -406,18 +440,25 @@ public class AppMain {
                 //Instancia o veículo
                 vei = new Veiculo(infos.get(0), infos.get(1), infos.get(2), Integer.parseInt(infos.get(3)));
                 //Cadastrando o veiculo
-                cli.addVeiculo(vei);
+                if (cli.getClass().equals(ClientePF.class)) {
+                    ((ClientePF)cli).cadastrarVeiculo(vei);
+                } else {
+                    ((ClientePJ)cli).atualizarFrota(((ClientePJ)cli).getListaFrota().get(((ClientePJ)cli).getListaFrota().size()-1).getCode(), vei, 1); 
+                }
                 System.out.println("O veículo de placa: " + vei.getplaca() + " foi adicionado ao cliente " + cli.getNome() + " com sucesso!");
             }
             else if (escolha == MenuOperacoesCad.SEGURADORA.getOperacao()){
-                Boolean nome_ok, num_ok;
+                Boolean nome_ok, num_ok,cnpj_ok;
                 Seguradora nova_seg;
-                ArrayList<String> infos = new ArrayList<String>(); 
+                ArrayList<String> infos = new ArrayList<String>();
+                for (int i = 0; i < 5; i++) {
+                    infos.add("a");
+                } 
                 //Obtendo o nome da nova Seguradora
                 System.out.println("Digite o nome da Seguradora a ser cadastrada:");
                 do {
                     infos.set(0, leitor.nextLine());
-                    nome_ok = Validacao.validaNome(infos.get(1));
+                    nome_ok = Validacao.validaNome(infos.get(0));
                     if (!nome_ok) {
                         System.out.println("Por favor, digite um nome válido: (Apenas letras são suportadas)");
                     }
@@ -426,7 +467,7 @@ public class AppMain {
                 System.out.println("Digite o número de telefone da nova seguradora:");
                 do {
                     infos.set(1, leitor.nextLine().replaceAll("\\D", ""));
-                    num_ok = Validacao.validaNome(infos.get(1));
+                    num_ok = Validacao.validaTelef(infos.get(1));
                     if (!num_ok) {
                         System.out.println("Por favor, digite um número válido: (Telefones devem possuir no mínimo 8 dígitos numéricos)");
                     }
@@ -436,8 +477,16 @@ public class AppMain {
                 infos.set(2, leitor.nextLine());
                 System.out.println("Digite o endereço da nova seguradora");
                 infos.set(3, leitor.nextLine());
+                System.out.println("Digite o número de telefone da nova seguradora:");
+                do {
+                    infos.set(4, leitor.nextLine().replaceAll("\\D", ""));
+                    cnpj_ok = Validacao.validarCNPJ(infos.get(4));
+                    if (!cnpj_ok) {
+                        System.out.println("Por favor, digite um CNPJ válido:");
+                    }
+                } while (!cnpj_ok);
                 //Instanciando e relacionando a seguradora
-                nova_seg = new Seguradora(infos.get(0), infos.get(1), infos.get(2), infos.get(3));
+                nova_seg = new Seguradora(infos.get(4), infos.get(0), infos.get(1), infos.get(2), infos.get(3));
                 empresas.add(nova_seg);
             }
             else if (escolha != MenuOperacoesCad.VOLTAR.getOperacao()){
@@ -464,16 +513,22 @@ public class AppMain {
             else if (escolha == MenuOperacoesList.SIN_SEG.getOperacao()){
                 for (Seguradora seg_atual : empresas) {
                     System.out.println("Listando os Sinistros da Seguradora " + seg_atual.getNome());
-                    for (Sinistro sin_atual : seg_atual.getListaSinistros()) {
-                        System.out.println(sin_atual.toString());
+                    ArrayList<Sinistro> lista_sin = new ArrayList<Sinistro>();
+                    for (Cliente cli_atual : seg_atual.getListaClientes()) {
+                        lista_sin.addAll(seg_atual.getSinistrosPorCliente(cli_atual));
                     }
+                    for (Sinistro sinistro : lista_sin) {
+                        System.out.println(sinistro);
+                }
                 }
             }
             else if (escolha == MenuOperacoesList.SIN_CLI.getOperacao()){
                 for (Seguradora seg_atual : empresas) {
                     for (Cliente cli_atual : seg_atual.getListaClientes()) {
                         System.out.println("Listando os Sinistros relacionados ao Cliente " + cli_atual.getNome());
-                        seg_atual.visualizarSinistro(cli_atual.getNome());
+                        for (Sinistro sinistro : seg_atual.getSinistrosPorCliente(cli_atual)) {
+                            System.out.println(sinistro);
+                        }
                     }
                 }   
             }
@@ -481,7 +536,7 @@ public class AppMain {
                 for (Seguradora seg_atual : empresas) {
                     System.out.println("Listando os Veiculos relacionados a Seguradora " + seg_atual.getNome());
                     for (Cliente cli_atual : seg_atual.getListaClientes()) {
-                        for (Veiculo vei_atual : cli_atual.getLista_Veiculos()){
+                        for (Veiculo vei_atual : cli_atual.getlistaVeiculos()){
                             System.out.println(vei_atual.toString());
                         }
                     }
@@ -491,7 +546,7 @@ public class AppMain {
                 for (Seguradora seg_atual : empresas) {
                     for (Cliente cli_atual : seg_atual.getListaClientes()) {
                         System.out.println("Listando os Veiculos relacionados ao Cliente " + cli_atual.getNome());
-                        for (Veiculo vei_atual : cli_atual.getLista_Veiculos()){
+                        for (Veiculo vei_atual : cli_atual.getlistaVeiculos()){
                             System.out.println(vei_atual.toString());
                         }
                     }
@@ -519,7 +574,7 @@ public class AppMain {
                     Iterator<Seguradora> segur = empresas.iterator();
                     while (segur.hasNext() && !achou) {
                         Seguradora atual = (Seguradora)segur.next();
-                        cli = atual.identClient(Long.parseLong(leitura.replaceAll("\\D", "")));
+                        cli = atual.identClient(leitura.replaceAll("\\D", ""));
                         if(cli != null){
                             achou = true;
                             seg = atual;
@@ -536,7 +591,7 @@ public class AppMain {
                 Veiculo vei = null;
                 Cliente cli = null;
                 Boolean  achou = false;
-                //Encontra o cliente que será excluído
+                //Encontra o veiculo que será excluído
                 System.out.println("Digite a Placa do Veículo que será excluído");
                 do{    
                     leitura = leitor.nextLine();
@@ -557,35 +612,18 @@ public class AppMain {
                         System.out.println("Veículo não encontrado, por favor, verifique os dados");
                     }
                 }while(!achou);
-                cli.remVeiculo(vei);
-                System.out.println("O veículo foi removido com sucesso!");
-            }
-            else if (escolha == MenuOperacoesExcl.SINISTRO.getOperacao()){
-                Seguradora seg = null;
-                Sinistro sin = null;
-                Boolean achou = false;
-                //Encontra o Sinistro que será excluído
-                System.out.println("Digite o ID do Sinistro que será excluído");
-                do{    
-                    leitura = leitor.nextLine();
-                    Iterator<Seguradora> segur = empresas.iterator();
-                    while (segur.hasNext() && !achou) {
-                        Seguradora seg_atual = (Seguradora)segur.next();
-                        Iterator<Sinistro> sinist = seg_atual.getListaSinistros().iterator();
-                        while (sinist.hasNext() && !achou) {
-                            Sinistro sin_atual = (Sinistro)sinist.next();
-                            if(sin_atual.getid() == Integer.parseInt(leitura)){
-                                achou = true;
-                                sin = sin_atual;
-                                seg = seg_atual;
-                            }
+                if (cli.getClass().equals(ClientePF.class)) {
+                    ((ClientePF)cli).removerVeiculo(vei);
+                } else {
+                    String code = null;
+                    for (Frota frota : ((ClientePJ)cli).getListaFrota()) {
+                        if (frota.getlistaVeiculos().contains(vei)) {
+                            code = frota.getCode();
                         }
                     }
-                    if (!achou) {
-                        System.out.println("Sinistro não encontrado, por favor, verifique os dados");
-                    }
-                }while(!achou);
-                seg.removerSinistro(sin);
+                    ((ClientePJ)cli).atualizarFrota(code, vei, 2);
+                }
+                System.out.println("O veículo foi removido com sucesso!");
             }
             else if (escolha != MenuOperacoesExcl.VOLTAR.getOperacao()){
                 System.out.println("Por favor, as opções válidas são apenas números de 0 a 3 (inclusos).");

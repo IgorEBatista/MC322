@@ -1,27 +1,31 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Iterator;
 
 public class Seguradora {
+    private final String CNPJ;
     private String nome;
     private String telefone;
-    private String email;
     private String endereco;
-    private ArrayList<Sinistro> listaSinistros;
-    private LinkedList<Cliente> listaClientes;
+    private String email;
+    private ArrayList<Cliente> listaClientes;
+    private ArrayList<Seguro> listaSeguros;
 
 
     // Construtor
-    public Seguradora (String nome, String telefone, String email, String endereco){
+    public Seguradora (String CNPJ, String nome, String telefone, String email, String endereco){
+        this.CNPJ = Validacao.limpaNum(CNPJ);
         this.nome = nome;
         this.telefone = telefone;
-        this.email = email;
         this.endereco = endereco;
-        this.listaSinistros = new ArrayList<Sinistro>();
-        this.listaClientes = new LinkedList<Cliente>();
+        this.email = email;
+        this.listaClientes = new ArrayList<Cliente>();
+        this.listaSeguros = new ArrayList<Seguro>();
     }
 
     // Getters e setters
+    public String getCNPJ(){
+        return this.CNPJ;
+    }
     public String getNome (){
         return nome;
     }
@@ -54,47 +58,53 @@ public class Seguradora {
         this.endereco = endereco;
     }
 
-    public ArrayList<Sinistro> getListaSinistros() {
-        return listaSinistros;
+    public ArrayList<Seguro> getListaSeguros() {
+        return listaSeguros;
     }
 
-    public LinkedList<Cliente> getListaClientes() {
+    public ArrayList<Cliente> getListaClientes() {
         return listaClientes;
     }
 
     //Outros Métodos
     public String toString() {
         //Controle de string
-            return ("Nome: " + getNome() +
-                    "\nTelefone: " + getTelefone() +
-                    "\nEmail: " + getEmail() +
-                    "\nEndereço: " + getEndereco() + "\n" );
-        }
-        
-    public Cliente identClient(String nome){
-        Iterator<Cliente> elem = this.listaClientes.iterator();
-        while (elem.hasNext()) {
-            Cliente atual = (Cliente)elem.next();
-            if (atual.getNome().equals(nome)) {
-                return atual;
+        String texto = "Nome: " + getNome();
+        texto = texto.concat("\nCNPJ: " + getCNPJ());
+        texto = texto.concat("\nTelefone: " + telefone);
+        texto = texto.concat("\nEmail: " + email);
+        texto = texto.concat("\nEndereço: " + endereco);
+        texto = texto.concat("\nLista de Clientes:");
+        for (Cliente cliente : listaClientes) {
+            texto = texto.concat("\n" + cliente);
+            texto = texto.concat("\nSeguros desse cliente:");
+            for (Seguro seguro : getSegurosPorCliente(cliente)) {
+                texto = texto.concat("\n" + seguro);
             }
         }
-        return null;
-    }
-    public Cliente identClient(Long CPF){
+        texto = texto.concat("\nNumero total de seguros: " + listaSeguros.size());
+        return texto;
+        }
+        
+    public Cliente identClient(String cad){
         Iterator<Cliente> elem = this.listaClientes.iterator();
-        if (CPF > (10^12)) {
+        Long cadL = Long.parseLong(cad); 
+        if ( cadL.longValue() > (100000000000L)) {
             while (elem.hasNext()) {
-                ClientePJ atual = (ClientePJ)elem.next();
-                if (atual.getCNPJ().equals(String.valueOf(CPF)) ) {
-                    return atual;
+                Cliente atual = elem.next();
+                if (atual.getClass() == ClientePJ.class) {
+                    if (((ClientePJ)atual).getCNPJ().equals(cad)) {
+                        return atual;
+                    }
                 }
             }
         } else {
             while (elem.hasNext()) {
                 ClientePF atual = (ClientePF)elem.next();
-                if (atual.getCPF().equals(String.valueOf(CPF)) ) {
-                    return atual;
+                if (atual.getClass() == ClientePF.class) {
+                    if (((ClientePF)atual).getCPF().equals(cad)) {
+                        return atual;
+                    }
                 }
             }
         }
@@ -105,8 +115,8 @@ public class Seguradora {
         return listaClientes.add(cliente);
     }
 
-    public boolean removerCliente(String cliente){
-        Cliente alvo = identClient(cliente);
+    public boolean removerCliente(String cad){
+        Cliente alvo = identClient(cad);
         if(alvo == null) {System.out.println("Cliente não encontrado!");}
         return listaClientes.remove(alvo);
     }
@@ -124,55 +134,59 @@ public class Seguradora {
         }
     }
 
-    public boolean gerarSinistro(Sinistro sinistro) {
-        return listaSinistros.add(sinistro);
+    public Boolean gerarSeguro(ClientePJ cliente, Frota frota) {
+        return listaSeguros.add(new SeguroPJ(this, frota, cliente));       
+    }
+        
+    public Boolean gerarSeguro(ClientePF cliente, Veiculo veiculo) {
+        return listaSeguros.add(new SeguroPF(this, veiculo, cliente));       
     }
 
-    public boolean visualizarSinistro(String nome) {
-        boolean achou = false;
-        Iterator<Sinistro> elem = this.listaSinistros.iterator();
+    public Boolean cancelarSeguro(Seguro seguro) {
+        return listaSeguros.remove(seguro);
+    }
+
+    public ArrayList<Seguro> getSegurosPorCliente(Cliente cliente) {
+        ArrayList<Seguro> lista_nova = new ArrayList<Seguro>();
+        Iterator<Seguro> elem = this.listaSeguros.iterator();
         while (elem.hasNext()) {
-            Sinistro atual = (Sinistro)elem.next();
-            if (atual.getCliente().getNome().equals(nome)) {
-                achou = true;
-                System.out.println(atual);
+            Seguro atual = (Seguro)elem.next();
+            if (atual.getCliente() == cliente) {
+                lista_nova.add(atual);
             }
-        }
-        return achou;
-    }
-
-    public ArrayList<Sinistro> listarSinistros(Cliente cliente) {
-        Iterator<Sinistro> elem = this.listaSinistros.iterator();
-        ArrayList<Sinistro> lista_nova = new ArrayList<Sinistro>();
-        while (elem.hasNext()) {
-            Sinistro atual = (Sinistro)elem.next();
-            lista_nova.add(atual);
         }
         return lista_nova;
     }
 
-    public boolean removerSinistro(Sinistro sinistro) {
-        return this.listaSinistros.remove(sinistro);
-    }
+    public ArrayList<Sinistro> getSinistrosPorCliente(Cliente cliente) {
+        ArrayList<Sinistro> lista = new ArrayList<Sinistro>();
+        
+        for (Seguro seguro : this.listaSeguros) {
+            if (seguro.getCliente() == cliente) {
+                lista.addAll(seguro.getListaSinistros());
+                for (Condutor condutor : seguro.getListaCondutores()) {
+                    lista.addAll(condutor.getListaSinistros());
+                }
+            }
+        }
 
-    public double calcularPrecoSeguroCliente(Cliente cliente){
-        return (cliente.calculaScore() * (1 + listarSinistros(cliente).size()));
+        return lista;
     }
 
     public double calcularReceita(){
-        double total = 0.0;
-        Iterator<Cliente> elem = this.listaClientes.iterator();
+        int total = 0;
+        Iterator<Seguro> elem = this.listaSeguros.iterator();
         while (elem.hasNext()) {
-            Cliente atual = (Cliente)elem.next();
-            if (atual.isModificado()) {
-                atual.setPreco_seguro(calcularPrecoSeguroCliente(atual));
+            Seguro atual = (Seguro)elem.next();
+            if (atual.getCliente().isModificado() || !atual.getAtualizado()) {
+                atual.atualizarValor();
             }
-            total += atual.getPreco_seguro();
+            total += atual.getValorMensal();
         }
         return total;
     }
 
-    public static Seguradora ident_Seguradora(LinkedList<Seguradora> lista, String nome) {
+    public static Seguradora ident_Seguradora(ArrayList<Seguradora> lista, String nome) {
         Iterator<Seguradora> elem = lista.iterator();
         while (elem.hasNext()) {
             Seguradora atual = (Seguradora)elem.next();
@@ -181,6 +195,23 @@ public class Seguradora {
             }
         }
         return null;        
+    }
+
+    public Seguro identSeguro(String placa) {
+        for (Seguro seguro : listaSeguros) {
+            if (seguro.getClass() == SeguroPF.class) {
+                if (((SeguroPF)seguro).getVeiculo().getplaca().equals(placa)) {
+                    return seguro;   
+                }
+            } else {
+                for (Veiculo vei_atual : ((SeguroPJ)seguro).getFrota().getlistaVeiculos()) {
+                    if (vei_atual.getplaca().equals(placa)) {
+                        return seguro;
+                    }
+                }                
+            }
+        }
+        return null;
     }
 
 }

@@ -14,6 +14,7 @@ public class ClientePJ extends Cliente {
         this.CNPJ = CNPJ.replaceAll("\\D", "");
         this.dataFundacao = dataFundacao;
         this.num_funcionarios = num_funcionarios;
+        this.listaFrota = new ArrayList<Frota>();
     }    
     //Getters e Setters
     
@@ -42,19 +43,23 @@ public class ClientePJ extends Cliente {
         this.listaFrota = listaFrota;
     }
 
+    public ArrayList<Veiculo> getlistaVeiculos(){
+        ArrayList<Veiculo> lista = new ArrayList<Veiculo>();
+        for (Frota frota : getListaFrota()) {
+            lista.addAll(frota.getlistaVeiculos());
+        }   
+        return lista;
+    }
+
     //Outros métodos
 
-    public boolean cadastrarFrota(String code) {
-        boolean funcionou = false;
-        Frota nFrota = null;
-        if (enc_Frota(code) == null) {
-            nFrota = new Frota(code);
-            funcionou = this.listaFrota.add(nFrota);
-        }
+    public boolean cadastrarFrota(Frota frota) {
+        boolean funcionou = false;    
+        funcionou = this.listaFrota.add(frota);
         return funcionou;
     }
 
-    public Frota enc_Frota(String code) {
+    public Frota identFrota(String code) {
         Iterator<Frota> elem = this.listaFrota.iterator();
         while (elem.hasNext()) {
             Frota atual = (Frota)elem.next();
@@ -66,15 +71,24 @@ public class ClientePJ extends Cliente {
     }
 
     public boolean atualizarFrota(String code, Veiculo veic, int modo){
+        /**Modos de uso:
+         * Modo 1 = Adicionar veículos
+         * Modo 2 = Remover veiculos
+         * Modo 3 = Apagar Frota
+         */
         boolean agiu = true;
-        Frota frota = enc_Frota(code);
+        Frota frota = identFrota(code);
+        if (frota == null) {
+            return false;
+        }
 
         if (modo == 1) {
             frota.addVeiculo(veic);
         } else if (modo == 2){
             agiu = frota.remVeiculo(veic);
+        } else if (modo == 3){
+            agiu = listaFrota.remove(frota);
         } else {
-            System.out.println("Opção não encontrada");
             agiu = false;
         }
         this.setModificado(agiu);
@@ -82,22 +96,30 @@ public class ClientePJ extends Cliente {
     }
 
     public ArrayList<Veiculo> getVeiculosPorFrota(String code) {
-        Frota frota = enc_Frota(code);
+        Frota frota = identFrota(code);
         if (frota != null) {
-            return frota.getLista_veiculos();
+            return frota.getlistaVeiculos();
         }
         return null;
     }
 
-    public double calculaScore() { //TODO alterar
-        return CalcSeguro.VALOR_BASE.getOperacao() * (1 + (num_funcionarios/100) * getLista_Veiculos().size());
+    public String toString() {
+        String texto = super.toString();
+                texto = texto.concat("\nCNPJ: " + CNPJ);
+                texto = texto.concat("\nData de Fundacao: " + dataFundacao);
+                texto = texto.concat("\nNúmero de Funcionários: " + num_funcionarios);
+        return texto; 
     }
 
-    public String toString() {
-        return (super.toString() + 
-                "\nCNPJ: " + CNPJ + 
-                "\nData de Fundacao: " + dataFundacao +
-                "\nNúmero de Funcionários: " + num_funcionarios);
+    public Veiculo ident_Veiculo(String placa) {
+        for (Frota frota : listaFrota) {
+            for (Veiculo veiculo : frota.getlistaVeiculos()) {
+                if (veiculo.getplaca().equals(placa)) {
+                    return veiculo;
+                }
+            }
+        }
+        return null;
     }
     
 }

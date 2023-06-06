@@ -61,10 +61,15 @@ public class Sinistro {
 
     public String toString(){
         //Controle de string
-        return ("ID: " + getid() + 
-                "\nData: " + getdata() + 
-                "\nEndereço: " + getendereco() + 
-                "\nSeguro: " + getseguro() + 
-                "\nCondutor: " + getcondutor().getNome());
+        String texto = "ID: " + getid(); 
+        texto = texto.concat("\nData: " + getdata()); 
+        texto = texto.concat("\nEndereço: " + getendereco());
+        texto = texto.concat("\nSeguro: " + getseguro());
+        if (condutor != null) {
+            texto = texto.concat("\nCondutor: " + getcondutor().getNome());
+        }
+        
+        return texto;
     }
+
 }

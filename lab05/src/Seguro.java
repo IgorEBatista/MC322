@@ -17,9 +17,14 @@ public abstract class Seguro {
     
     //Construtor
 
-    public Seguro(Seguradora seguradora) throws ParseException {
+    public Seguro(Seguradora seguradora){
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-        Date dataAtual = formato.parse(LocalDate.now().toString());
+        Date dataAtual;
+        try {
+            dataAtual = formato.parse(LocalDate.now().toString());
+        } catch (ParseException e) {
+            dataAtual = new Date();
+        }
 
         this.id = serie;
         this.dataInicio = dataAtual;
@@ -80,6 +85,7 @@ public abstract class Seguro {
 
     public void setListaSinistros(ArrayList<Sinistro> listaSinistros) {
         this.listaSinistros = listaSinistros;
+        this.atualizado = false;
     }
 
     public ArrayList<Condutor> getListaCondutores() {
@@ -98,17 +104,61 @@ public abstract class Seguro {
         this.atualizado = atualizado;
     }
     //Outros métodos
+    public abstract Cliente getCliente();
 
-    public abstract boolean desautorizarCondutor();
-    public abstract boolean autorizarCondutor();
-    public abstract int calcularValor();
-    public abstract Sinistro gerarSinistro();
+    public abstract void setCliente(Cliente cliente);
+    
+    public boolean desautorizarCondutor(String CPF){
+        Condutor condutor = Condutor.ident_Condutor(CPF, this.listaCondutores);
+        if (condutor != null) {
+            //Salva os sisnitros do condutor dentro da lista do cliente.
+            this.listaSinistros.addAll(condutor.getListaSinistros());
+            this.atualizado = false;
+        }
+        return this.listaCondutores.remove(condutor);
+    }
+
+    public boolean autorizarCondutor(Condutor condutor){
+        return this.listaCondutores.add(condutor);
+
+    }
+
+    public Sinistro gerarSinistro(Date data, String endereco, Condutor condutor){
+        Sinistro n_sin = new Sinistro(data, endereco, condutor, this);
+        if (condutor != null) {
+            condutor.adicionarSinistro(n_sin);
+        } else {
+            this.listaSinistros.add(n_sin);
+        }
+        return n_sin;
+    }
+    
+    public abstract double calcularValor();
+
+    public Condutor identCondutor(String CPF) {
+        for (Condutor condutor : listaCondutores) {
+            if (condutor.getCPF().equals(CPF)) {
+                return condutor;
+            }
+        }
+        return null;
+    }
 
     public void atualizarValor() {
-        setValorMensal(calcularValor());
+        setValorMensal((int)Math.round(calcularValor()));
         this.atualizado = true;
+        getCliente().setModificado(false);
     }
     public String toString() {
-        
+        String texto = "ID: " + id;
+        texto = texto.concat("\nSeguradora: " + seguradora.getNome());
+        texto = texto.concat("\nData de vigencia: " + dataInicio + " até: " + dataFim);
+        texto = texto.concat("\nValor mensal: " + valorMensal);
+        texto = texto.concat("\nNúmero de Sinistros registrados: " + listaSinistros.size());
+        texto = texto.concat("\nCondutores: ");
+        for (Condutor condutor : listaCondutores) {
+            texto = texto.concat("\n" + condutor.getNome() + " CPF: " + condutor.getCPF());
+        }
+        return texto;
     }
 }

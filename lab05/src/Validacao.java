@@ -1,4 +1,5 @@
 public class Validacao {
+
     public static boolean validarCNPJ(String cnpj){
         //Validador de cnpj
         int pdig = 0, sdig = 0, j;
@@ -127,9 +128,13 @@ public class Validacao {
     }
 
     public static boolean validaNome(String nome) {
-        return nome.matches("[A-Z][a-z]{1,}");
+        return nome.matches("[a-zA-Z]{1,}");
     }
     public static boolean validaTelef(String tlf) {
         return tlf.length() >= 8;
+    }
+
+    public static String limpaNum(String numero) {
+        return numero.replaceAll("\\D", "");
     }
 }

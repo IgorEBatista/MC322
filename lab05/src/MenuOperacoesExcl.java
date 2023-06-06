@@ -1,7 +1,6 @@
 public enum MenuOperacoesExcl {
     CLIENTE (1) ,
     VEICULO (2) ,
-    SINISTRO (3) ,
     VOLTAR (0) ;
 
 
