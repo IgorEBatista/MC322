@@ -9,8 +9,15 @@ public class Seguradora {
     private String email;
     private ArrayList<Cliente> listaClientes;
     private ArrayList<Seguro> listaSeguros;
-
-
+    private ArquivoClientePF arq_ClientePF;
+    private ArquivoClientePJ arq_ClientePJ;
+    private ArquivoCondutor arq_Condutor;
+    private ArquivoFrota arq_Frota;
+    private ArquivoSeguro arq_Seguro;
+    private ArquivoSinistro arq_Sinistro;
+    private ArquivoVeiculo arq_Veiculo;
+    
+    
     // Construtor
     public Seguradora (String CNPJ, String nome, String telefone, String email, String endereco){
         this.CNPJ = Validacao.limpaNum(CNPJ);
@@ -20,6 +27,13 @@ public class Seguradora {
         this.email = email;
         this.listaClientes = new ArrayList<Cliente>();
         this.listaSeguros = new ArrayList<Seguro>();
+        this.arq_ClientePF = null;
+        this.arq_ClientePJ = null;
+        this.arq_Condutor = null;
+        this.arq_Frota = null;
+        this.arq_Seguro = null;
+        this.arq_Sinistro = null;
+        this.arq_Veiculo = null;
     }
 
     // Getters e setters
